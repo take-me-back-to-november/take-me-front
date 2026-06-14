@@ -1,0 +1,165 @@
+{
+  "common": {
+    "appName": "Take Me",
+    "loading": "Loading...",
+    "error": "Something went wrong.",
+    "retry": "Try again",
+    "close": "Close",
+    "signOut": "Sign out",
+    "reviewer": "Reviewer",
+    "defaultUser": "Take Me User",
+    "logoAlt": "Take Me Logo"
+  },
+  "nav": {
+    "home": "Home",
+    "review": "Review",
+    "profile": "Profile"
+  },
+  "splash": {
+    "tagline": "Where songs get taken seriously."
+  },
+  "signIn": {
+    "title": "Review the music that moves you.",
+    "signingIn": "Signing in...",
+    "signInWithGoogle": "Sign in with Google",
+    "terms": "By signing in, you agree to our Terms and Privacy Policy.",
+    "envHint": "Set VITE_GOOGLE_CLIENT_ID in your .env file to enable Google Sign-In."
+  },
+  "connectSpotify": {
+    "title": "Connect your music.",
+    "subtitle": "Link Spotify to review songs and like reviews. You can already browse the feed without connecting.",
+    "connect": "Connect Spotify",
+    "connecting": "Opening Spotify...",
+    "privacy": "Take Me will never modify your library or post without permission.",
+    "connected": "I've connected Spotify",
+    "notNow": "Explore the app"
+  },
+  "spotifyGate": {
+    "title": "Unlock Spotify",
+    "subtitle": "Connect your account to interact with the community.",
+    "profileHint": "Connect to review tracks and like reviews.",
+    "cta": "Connect Spotify",
+    "likeLocked": "Connect Spotify to like reviews.",
+    "reviewLocked": "Connect Spotify to post your review.",
+    "benefits": {
+      "review": "Review songs from the Spotify catalog",
+      "like": "Like and react to community reviews",
+      "suggestions": "See suggestions based on what you listen to most",
+      "nowPlaying": "See what you are playing right now"
+    }
+  },
+  "spotifyCallback": {
+    "connecting": "Completing Spotify connection...",
+    "connected": "Spotify connected! Redirecting...",
+    "missingParams": "Invalid return link. Go back and try connecting again.",
+    "error": "Could not connect Spotify. Please try again."
+  },
+  "home": {
+    "topTracks": "Your Top Tracks",
+    "connectSpotifyHint": "Connect Spotify to see your top tracks.",
+    "recentReviews": "Recent Reviews",
+    "feedGeneral": "General",
+    "feedFollowing": "Following",
+    "followingComingSoon": "Coming soon",
+    "followingComingSoonHint": "Reviews from people you follow will be here soon.",
+    "noReviewsTitle": "It's too quiet in here",
+    "noReviewsHint": "Pick a track, drop your rating, and break the silence.",
+    "noReviewsCta": "Review a song",
+    "loadError": "Failed to load feed."
+  },
+  "search": {
+    "placeholder": "Search tracks, albums, or artists",
+    "clearSearch": "Clear search",
+    "emptyTitle": "Find the music you love.",
+    "emptyHint": "Search for tracks, albums, or artists to start your next review.",
+    "suggestionsTitle": "For you",
+    "noSuggestions": "No suggestions.",
+    "suggestionsError": "Failed to load.",
+    "searching": "Searching...",
+    "tabTracks": "Tracks",
+    "tabAlbums": "Albums",
+    "searchTypeLabel": "Search type",
+    "noTrackResults": "Nothing for \"{{query}}\"",
+    "noAlbumResults": "Nothing for \"{{query}}\"",
+    "album": "Album",
+    "trackCount": "{{count}} tracks",
+    "searchError": "Search failed."
+  },
+  "writeReview": {
+    "pickTrackFirst": "Pick a track first",
+    "pickTrackHint": "Search for a song or choose one from your top tracks to write a review.",
+    "goToSearch": "Find a song",
+    "rateTrack": "Rate this track",
+    "placeholder": "What do you think?",
+    "postReview": "Post Review",
+    "posting": "Posting...",
+    "postError": "Failed to post review.",
+    "comments": "Comments",
+    "noComments": "No one has reviewed this track yet. Be the first.",
+    "commentsError": "Failed to load comments."
+  },
+  "profile": {
+    "linkedToSpotify": "Spotify linked",
+    "spotifyLinkedHint": "Ready to review and like reviews.",
+    "connectSpotify": "Connect Spotify",
+    "language": "Language",
+    "reviews": "Reviews",
+    "averageRating": "Average",
+    "loadError": "Failed to load profile.",
+    "nowPlaying": "Now playing",
+    "playing": "Playing",
+    "paused": "Paused",
+    "nothingPlaying": "Nothing playing right now.",
+    "nowPlayingError": "Could not load what you are listening to.",
+    "myReviews": "My Reviews",
+    "emptyReviews": "Your reviews will appear here.",
+    "writeReview": "Write a Review",
+    "switchSpotify": "Switch account",
+    "switchingSpotify": "Preparing switch...",
+    "switchSpotifyError": "Could not switch Spotify account.",
+    "unlinkSpotify": "Unlink Spotify",
+    "unlinkTitle": "Unlink Spotify?",
+    "unlinkDescription": "Without Spotify linked, some parts of Take Me stay locked.",
+    "unlinkLosses": {
+      "review": "Review songs from the Spotify catalog",
+      "like": "Like and react to community reviews",
+      "nowPlaying": "See what is playing now on your profile"
+    },
+    "keepSpotify": "Keep Spotify linked",
+    "confirmUnlinkSpotify": "Unlink anyway",
+    "unlinkSuccess": "Spotify unlinked successfully.",
+    "unlinkError": "Could not unlink Spotify.",
+    "unlinking": "Unlinking..."
+  },
+  "reviewCard": {
+    "albumCover": "Album cover",
+    "readMore": "Read more",
+    "readLess": "Read less",
+    "like": "Like",
+    "dislike": "Dislike",
+    "justNow": "Just now",
+    "hoursAgo_one": "{{count}} hour ago",
+    "hoursAgo_other": "{{count}} hours ago",
+    "daysAgo_one": "{{count}} day ago",
+    "daysAgo_other": "{{count}} days ago",
+    "star_one": "{{count}} star",
+    "star_other": "{{count}} stars"
+  },
+  "trackCarousel": {
+    "review": "Review"
+  },
+  "apiErrors": {
+    "requestFailed": "Request failed ({{status}})",
+    "userNotFound": "User not found",
+    "invalidToken": "Invalid token",
+    "tokenExpired": "Session expired",
+    "spotifyNotConfigured": "Spotify credentials are not configured",
+    "spotifyNoRefreshToken": "Spotify is not connected",
+    "spotifyFetchFailed": "Failed to fetch Spotify data",
+    "spotifyConnectionFailed": "Unable to start Spotify connection",
+    "invalidGoogleToken": "Invalid Google ID token",
+    "signInFailed": "Unable to sign in. Please try again.",
+    "reviewCreateFailed": "Failed to create review",
+    "songNotFound": "Failed to get song from Spotify"
+  }
+}

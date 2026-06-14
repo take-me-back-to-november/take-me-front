@@ -1,0 +1,165 @@
+{
+  "common": {
+    "appName": "Take Me",
+    "loading": "Carregando...",
+    "error": "Algo deu errado.",
+    "retry": "Tentar novamente",
+    "close": "Fechar",
+    "signOut": "Sair",
+    "reviewer": "Crítico",
+    "defaultUser": "Usuário Take Me",
+    "logoAlt": "Logo Take Me"
+  },
+  "nav": {
+    "home": "Início",
+    "review": "Avaliar",
+    "profile": "Perfil"
+  },
+  "splash": {
+    "tagline": "Onde as músicas são levadas a sério."
+  },
+  "signIn": {
+    "title": "Avalie a música que te move.",
+    "signingIn": "Entrando...",
+    "signInWithGoogle": "Entrar com Google",
+    "terms": "Ao entrar, você concorda com nossos Termos e Política de Privacidade.",
+    "envHint": "Defina VITE_GOOGLE_CLIENT_ID no seu arquivo .env para habilitar o login com Google."
+  },
+  "connectSpotify": {
+    "title": "Conecte sua música.",
+    "subtitle": "Vincule o Spotify para avaliar músicas e curtir reviews. Você já pode explorar o feed sem conectar.",
+    "connect": "Conectar Spotify",
+    "connecting": "Abrindo Spotify...",
+    "privacy": "O Take Me nunca modificará sua biblioteca ou publicará sem permissão.",
+    "connected": "Conectei o Spotify",
+    "notNow": "Explorar o app"
+  },
+  "spotifyGate": {
+    "title": "Desbloqueie o Spotify",
+    "subtitle": "Conecte sua conta para interagir com a comunidade.",
+    "profileHint": "Conecte para avaliar músicas e curtir reviews.",
+    "cta": "Conectar Spotify",
+    "likeLocked": "Conecte o Spotify para curtir reviews.",
+    "reviewLocked": "Conecte o Spotify para publicar sua avaliação.",
+    "benefits": {
+      "review": "Avaliar músicas do catálogo do Spotify",
+      "like": "Curtir e reagir às reviews da comunidade",
+      "suggestions": "Ver sugestões baseadas no que você mais escuta",
+      "nowPlaying": "Acompanhar o que está tocando agora"
+    }
+  },
+  "spotifyCallback": {
+    "connecting": "Concluindo conexão com Spotify...",
+    "connected": "Spotify conectado! Redirecionando...",
+    "missingParams": "Link de retorno inválido. Volte e tente conectar novamente.",
+    "error": "Não foi possível conectar o Spotify. Tente novamente."
+  },
+  "home": {
+    "topTracks": "Suas faixas favoritas",
+    "connectSpotifyHint": "Conecte o Spotify para ver suas faixas favoritas.",
+    "recentReviews": "Avaliações recentes",
+    "feedGeneral": "Geral",
+    "feedFollowing": "Seguindo",
+    "followingComingSoon": "Em breve",
+    "followingComingSoonHint": "O feed de quem você segue chegará em breve.",
+    "noReviewsTitle": "Tá quieto demais por aqui",
+    "noReviewsHint": "Escolhe uma faixa, dá tua nota e quebra o silêncio.",
+    "noReviewsCta": "Avaliar uma música",
+    "loadError": "Falha ao carregar o feed."
+  },
+  "search": {
+    "placeholder": "Buscar faixas, álbuns ou artistas",
+    "clearSearch": "Limpar busca",
+    "emptyTitle": "Encontre a música que você curte.",
+    "emptyHint": "Busque faixas, álbuns ou artistas para escrever sua próxima avaliação.",
+    "suggestionsTitle": "Para você",
+    "noSuggestions": "Sem sugestões.",
+    "suggestionsError": "Falha ao carregar.",
+    "searching": "Buscando...",
+    "tabTracks": "Faixas",
+    "tabAlbums": "Álbuns",
+    "searchTypeLabel": "Tipo de busca",
+    "noTrackResults": "Nada para \"{{query}}\"",
+    "noAlbumResults": "Nada para \"{{query}}\"",
+    "album": "Álbum",
+    "trackCount": "{{count}} faixas",
+    "searchError": "Falha na busca."
+  },
+  "writeReview": {
+    "pickTrackFirst": "Escolha uma faixa primeiro",
+    "pickTrackHint": "Busque uma música ou escolha uma das suas faixas favoritas para escrever uma avaliação.",
+    "goToSearch": "Buscar música",
+    "rateTrack": "Avalie esta faixa",
+    "placeholder": "O que você achou?",
+    "postReview": "Publicar avaliação",
+    "posting": "Publicando...",
+    "postError": "Falha ao publicar avaliação.",
+    "comments": "Comentários",
+    "noComments": "Ninguém comentou esta faixa ainda. Seja o primeiro.",
+    "commentsError": "Falha ao carregar comentários."
+  },
+  "profile": {
+    "linkedToSpotify": "Spotify vinculado",
+    "spotifyLinkedHint": "Pronto para avaliar e curtir reviews.",
+    "connectSpotify": "Conectar Spotify",
+    "language": "Idioma",
+    "reviews": "Avaliações",
+    "averageRating": "Média",
+    "loadError": "Falha ao carregar o perfil.",
+    "nowPlaying": "Tocando agora",
+    "playing": "Tocando",
+    "paused": "Pausado",
+    "nothingPlaying": "Nenhuma faixa no momento.",
+    "nowPlayingError": "Não foi possível carregar o que você está ouvindo.",
+    "myReviews": "Minhas avaliações",
+    "emptyReviews": "Suas avaliações aparecerão aqui.",
+    "writeReview": "Escrever avaliação",
+    "switchSpotify": "Trocar conta",
+    "switchingSpotify": "Preparando troca...",
+    "switchSpotifyError": "Não foi possível trocar a conta do Spotify.",
+    "unlinkSpotify": "Desvincular Spotify",
+    "unlinkTitle": "Desvincular Spotify?",
+    "unlinkDescription": "Sem o Spotify vinculado, algumas partes do Take Me ficam bloqueadas.",
+    "unlinkLosses": {
+      "review": "Avaliar músicas do catálogo do Spotify",
+      "like": "Curtir e reagir às reviews da comunidade",
+      "nowPlaying": "Ver o que está tocando agora no seu perfil"
+    },
+    "keepSpotify": "Manter Spotify vinculado",
+    "confirmUnlinkSpotify": "Desvincular mesmo assim",
+    "unlinkSuccess": "Spotify desvinculado com sucesso.",
+    "unlinkError": "Não foi possível desvincular o Spotify.",
+    "unlinking": "Desvinculando..."
+  },
+  "reviewCard": {
+    "albumCover": "Capa do álbum",
+    "readMore": "Ler mais",
+    "readLess": "Ler menos",
+    "like": "Curtir",
+    "dislike": "Não curtir",
+    "justNow": "Agora mesmo",
+    "hoursAgo_one": "{{count}} hora atrás",
+    "hoursAgo_other": "{{count}} horas atrás",
+    "daysAgo_one": "{{count}} dia atrás",
+    "daysAgo_other": "{{count}} dias atrás",
+    "star_one": "{{count}} estrela",
+    "star_other": "{{count}} estrelas"
+  },
+  "trackCarousel": {
+    "review": "Avaliar"
+  },
+  "apiErrors": {
+    "requestFailed": "Falha na requisição ({{status}})",
+    "userNotFound": "Usuário não encontrado",
+    "invalidToken": "Token inválido",
+    "tokenExpired": "Sessão expirada",
+    "spotifyNotConfigured": "Credenciais do Spotify não configuradas",
+    "spotifyNoRefreshToken": "Spotify não conectado",
+    "spotifyFetchFailed": "Falha ao buscar dados do Spotify",
+    "spotifyConnectionFailed": "Não foi possível iniciar a conexão com o Spotify",
+    "invalidGoogleToken": "Token do Google inválido",
+    "signInFailed": "Não foi possível entrar. Tente novamente.",
+    "reviewCreateFailed": "Falha ao criar avaliação",
+    "songNotFound": "Música não encontrada no Spotify"
+  }
+}

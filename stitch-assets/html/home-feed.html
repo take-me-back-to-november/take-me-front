@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Take Me - Home Feed</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "surface-tint": "#53e076",
+                "secondary-container": "#4a4949",
+                "secondary-fixed-dim": "#c8c6c5",
+                "tertiary-fixed": "#e3e2e2",
+                "on-primary-fixed-variant": "#005320",
+                "on-error": "#690005",
+                "error": "#ffb4ab",
+                "on-tertiary-container": "#373838",
+                "tertiary-container": "#a1a1a1",
+                "background": "#0e150e",
+                "surface": "#0e150e",
+                "secondary": "#c8c6c5",
+                "on-surface-variant": "#bccbb9",
+                "primary": "#53e076",
+                "on-secondary-fixed": "#1c1b1b",
+                "on-primary-container": "#004118",
+                "primary-fixed": "#72fe8f",
+                "on-primary": "#003914",
+                "tertiary": "#c7c6c6",
+                "surface-container-low": "#161d16",
+                "outline": "#869585",
+                "on-tertiary-fixed-variant": "#464747",
+                "on-surface": "#dde5d9",
+                "surface-container-high": "#242c24",
+                "inverse-on-surface": "#2b322a",
+                "inverse-surface": "#dde5d9",
+                "on-background": "#dde5d9",
+                "tertiary-fixed-dim": "#c7c6c6",
+                "surface-container-highest": "#2f372e",
+                "surface-variant": "#2f372e",
+                "on-secondary-fixed-variant": "#474646",
+                "surface-container": "#1a211a",
+                "surface-dim": "#0e150e",
+                "outline-variant": "#3d4a3d",
+                "primary-fixed-dim": "#53e076",
+                "on-secondary": "#313030",
+                "surface-bright": "#333b33",
+                "surface-container-lowest": "#091009",
+                "primary-container": "#1db954",
+                "on-tertiary": "#2f3131",
+                "on-error-container": "#ffdad6",
+                "inverse-primary": "#006e2d",
+                "error-container": "#93000a",
+                "secondary-fixed": "#e5e2e1",
+                "on-secondary-container": "#bab8b7",
+                "on-primary-fixed": "#002108",
+                "on-tertiary-fixed": "#1a1c1c"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "xs": "4px",
+                "lg": "24px",
+                "container-margin": "24px",
+                "md": "16px",
+                "unit": "4px",
+                "xl": "40px",
+                "sm": "8px",
+                "gutter": "16px"
+        },
+        "fontFamily": {
+                "headline-md": [
+                        "Hanken Grotesk"
+                ],
+                "headline-lg-mobile": [
+                        "Hanken Grotesk"
+                ],
+                "label-md": [
+                        "Hanken Grotesk"
+                ],
+                "body-lg": [
+                        "Hanken Grotesk"
+                ],
+                "display": [
+                        "Hanken Grotesk"
+                ],
+                "label-sm": [
+                        "Hanken Grotesk"
+                ],
+                "headline-lg": [
+                        "Hanken Grotesk"
+                ],
+                "body-md": [
+                        "Hanken Grotesk"
+                ]
+        },
+        "fontSize": {
+                "headline-md": [
+                        "20px",
+                        {
+                                "lineHeight": "1.4",
+                                "fontWeight": "700"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "24px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "700"
+                        }
+                ],
+                "label-md": [
+                        "12px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-lg": [
+                        "16px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "500"
+                        }
+                ],
+                "display": [
+                        "48px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "800"
+                        }
+                ],
+                "label-sm": [
+                        "11px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-md": [
+                        "14px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+    /* Hide scrollbar for horizontal scrolling */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
+</head>
+<body class="bg-surface text-on-surface antialiased pb-[100px] font-body-md min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface/90 dark:bg-surface/90 backdrop-blur-md docked full-width top-0 sticky z-40 bg-surface dark:bg-surface flat no shadows flex justify-between items-center w-full px-container-margin py-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" data-icon="music_note">music_note</span>
+<img alt="Take Me Logo" class="h-6 object-contain" src="data:image/png;base64,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"/>
+</div>
+<div class="flex gap-md">
+<!-- Placeholder for potential actions -->
+</div>
+</header>
+<main class="max-w-[1440px] mx-auto w-full pb-xl">
+<!-- Your Top Tracks Horizontal Carousel -->
+<section class="mt-md px-container-margin md:px-[64px]">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-md">Your Top Tracks</h2>
+<div class="flex overflow-x-auto gap-md no-scrollbar pb-sm">
+<!-- Track 1 -->
+<div class="flex-none w-[140px] flex flex-col gap-sm group">
+<div class="relative w-full aspect-square rounded-lg overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Abstract geometric album cover art in deep moody dark tones with stark contrast and slight grainy texture, evoking an experimental electronic music feel. High fidelity, minimalist composition, corporate modern dark-first style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpvlry3L0FA4ysPMgk2OtSnJlHLp-GmZyyk4S9QCN_ObixI86diKcTgGQh-nvCL2dRjNB3pyqCwpLFbllW6SytbCZBeh2pHceqhqcSYOa99NkpIQWp6C7zi-qcj7R4-pr1bPFrhGd8kC-xZnJC_qRcB8rXpNtGNFrZleFJg78MONuP6K8KVgWia-qx3VXdghvQhhv_0VIAR6sAtUVxOYj0W7baC9ryjfJIyKx8T9s1QH6ZwryFIWnHudjntj8Bt0yDymDQd7Aj-w"/>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-md py-xs rounded-full hover:bg-primary-fixed active:scale-95 transition-all">Review</button>
+</div>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold truncate text-on-surface">Midnight City</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">M83</p>
+</div>
+</div>
+<!-- Track 2 -->
+<div class="flex-none w-[140px] flex flex-col gap-sm group">
+<div class="relative w-full aspect-square rounded-lg overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Vinyl record texture showing tight grooves lit from the side by dramatic cold blue light against a pitch black background. Minimalist, high contrast, corporate dark mode aesthetic suitable for album art thumbnail." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7G66j2nmyz-6GbpttJ0OrGseenhomyoypwJVB-6T0IjGwtInJfhTWPxgD9g-q7gBzjeKtw56g-UTurbvK7CQ5WZlBwjGHypDsgANhomd9nIOcp8P1Dp8qUWSaVTvV2SqTq925W0ZlYA2fH3ehI320KHy7n4ZNVqSjSNE-e3dC0flZuniXyvJhEaH67IrkyXAIMCffWJV0Bq2iDAn95Q3HTOfiSsgq1984GSqwfiuhgpR5lPI0wx7m7XbKNx_Tcocf77aS2CDM8g"/>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-md py-xs rounded-full hover:bg-primary-fixed active:scale-95 transition-all">Review</button>
+</div>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold truncate text-on-surface">Lazarus</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">David Bowie</p>
+</div>
+</div>
+<!-- Track 3 -->
+<div class="flex-none w-[140px] flex flex-col gap-sm group">
+<div class="relative w-full aspect-square rounded-lg overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Concert stage lights piercing through thick smoke in a completely dark venue. The lighting creates geometric beams. High density color against pure black, modern dark theme aesthetic, perfect for concert review imagery." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNrEeQXUdwsI6EpnskviRqwXMX6qJh-hJxwMbruSk0Hj1DwgJm6vXW2RgG1cI2v9nT03OwxGoSEPUzUSxd5pnIFt4U0Ao2x7531Or4iq88REZXd6PavLiuY2_niYAVWrgBeMWl7GbaoUvuIkymMGZYgyPTBjvbojpl_Fsc7y9NUkzdbHVC2657GlBMpsKwo6_vT5c52damrW3MuZdLbyucfC8YPN-gbrJpvXKtHUeSYmzyfdOheLbwG5C51vvzAPbn2IudM1PXBg"/>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-md py-xs rounded-full hover:bg-primary-fixed active:scale-95 transition-all">Review</button>
+</div>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold truncate text-on-surface">Nights</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Frank Ocean</p>
+</div>
+</div>
+<!-- Track 4 -->
+<div class="flex-none w-[140px] flex flex-col gap-sm group">
+<div class="relative w-full aspect-square rounded-lg overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Close up macro shot of analog synthesizer knobs and cables. The scene is darkly lit with subtle warm metallic highlights indicating professional studio equipment. Crisp details, rich deep dark background, sophisticated editorial feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEWLxc6r6rq2Q9zpt4T3tYjGSZduh8WakEDSpVbEu7f30IWnFxhklTQ0yIsTrPTOfOOCaM_SSHzlNY6QxtrtRORlhHgAp1iyPG9JlTeDq-73XnA1hm8pfA6TkCwWP6YqDRvQZQC3zIhCzvCj9SnpvznyqLrww_RYRwaJrpX3x3ygLEEPV-i81y3R1Sff80Razp9gcMwqrDDpAc4P9jUTKjGjU8wk2tPV1-BKbxgJFw9huufToycnDc-_tmG1iCvGmoW1t40pWytQ"/>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-md py-xs rounded-full hover:bg-primary-fixed active:scale-95 transition-all">Review</button>
+</div>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold truncate text-on-surface">Idioteque</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Radiohead</p>
+</div>
+</div>
+<!-- Track 5 -->
+<div class="flex-none w-[140px] flex flex-col gap-sm group">
+<div class="relative w-full aspect-square rounded-lg overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Minimalist photograph of an old condenser microphone standing alone in a dark soundproof booth. Shadows dominate the frame with only a sliver of light illuminating the grill. Clean, moody, highly structured layout element." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4NWfdWAPh2gXRtOosg0H8E2VHUsRDDaH3gBvkYLYWIqU-ksu06z3HYMjwckKkbM65bl9x_6KcPDAHLgjUBrjWY71b_JqK362GjfY2B8Rj6koCPSH565TeVDp7a7qHeXN0rky1OTqHd3b6TK_uj-YzNwrYd1e0HOIrB7narNbDX7l1QI_Gi4X_x18hBFyqxWjuRgmmGOiYPTk6JQurfcrKTDXISGRUixCiAMxjcT6mn_qSmMxTAy5_CTJkKZmxXxc_DpleziM8UA"/>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-md py-xs rounded-full hover:bg-primary-fixed active:scale-95 transition-all">Review</button>
+</div>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold truncate text-on-surface">Formation</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Beyoncé</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Reviews Feed -->
+<section class="mt-xl px-container-margin md:px-[64px]">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-lg">Recent Reviews</h2>
+<div class="flex flex-col gap-md">
+<!-- Review Card 1 -->
+<article class="bg-surface-container-low rounded-xl p-md border border-surface-container-high hover:bg-surface-container transition-colors">
+<!-- Header: User info & Rating -->
+<div class="flex justify-between items-start mb-sm">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young adult looking directly at the camera. The lighting is moody and cinematic against a dark grey backdrop, fitting a sleek modern user avatar on a high end streaming platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP9Gw-oraqFYyqLMx4c4ULhTYbbDHBeMt_7i6dTeBwgzwl0781hg6D_Z0g2E9tyCblpSmQeDh8KRpEpnpiodkKeEoZCE4XaKLT3e4YTJr8xTRhDXdiy95WvDrbVGjdAYrnpMpLJZxTM_6FGE3VbvAKfZxf4rQhPLaU1A_haZ9t7mfxr5V6IP9kMqYyzunIfLLuYN1Taw0YFuredRkAc6_5Cyb9vjc3ZxnFnnC54UkjqNGCkspEXJAfTnlf_jIxIb_Tc7Ly0JqJoA"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Alex Mercer</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">2 hours ago</p>
+</div>
+</div>
+<div class="flex gap-xs text-primary">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star_half" style="font-variation-settings: 'FILL' 0;">star_half</span>
+</div>
+</div>
+<!-- Song Info Snippet -->
+<div class="flex items-center gap-md bg-surface p-sm rounded-lg mb-md">
+<img class="w-12 h-12 rounded object-cover" data-alt="Abstract geometric album cover art in deep moody dark tones with stark contrast and slight grainy texture, evoking an experimental electronic music feel. High fidelity, minimalist composition, corporate modern dark-first style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtj-YJ2xv0qhFUJFUDIi1Jao70UGMbkx-tY8cJ7-ZJnh6Oc55AULgOTCVXe71ClB5NWTzznDg1eyuYt8rSxnV5lMY5bIZGRSrnj4TONI3DKQsiXDuEVIhUyY80pfGhxuzLDXFQ7-wkKjf3PphJG4RSRYtwGVATgLbqwBA460IF--X_Xxmwn32HIhRrVkzE4j3DDNGMAC2KBJQwl8vXrfmXZlQaJwSn2A3cIgYRAbDhT6wN7V6L3_Q21X69VKprOduzVvXC01qA7A"/>
+<div>
+<p class="font-body-md text-body-md font-bold text-on-surface">Midnight City</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">M83</p>
+</div>
+</div>
+<!-- Review Text -->
+<p class="font-body-md text-body-md text-on-surface-variant mb-md leading-relaxed line-clamp-3">
+                        The production on this track is absolutely massive. The way the synths build up in the intro sets a completely immersive atmosphere. Still sounds as fresh today as it did when it first dropped. An absolute masterclass in synth-pop dynamics.
+                    </p>
+<!-- Footer: Interactions -->
+<div class="flex items-center gap-lg border-t border-surface-container-high pt-sm">
+<button class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors group">
+<span class="material-symbols-outlined text-[20px] group-active:scale-90 transition-transform" data-icon="thumb_up">thumb_up</span>
+<span class="font-label-sm text-label-sm">24</span>
+</button>
+<button class="flex items-center gap-xs text-on-surface-variant hover:text-error transition-colors group">
+<span class="material-symbols-outlined text-[20px] group-active:scale-90 transition-transform" data-icon="thumb_down">thumb_down</span>
+</button>
+</div>
+</article>
+<!-- Review Card 2 -->
+<article class="bg-surface-container-low rounded-xl p-md border border-surface-container-high hover:bg-surface-container transition-colors">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young man slightly silhouetted against a dark background. Subtle, low-key lighting highlighting features. Minimalist corporate modern look for a clean user profile picture on a dark UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3rW8t5PfTTH5TmuOrpm70K4W03MiVxPqFTv-Gcwyyp3mSgHrPE8UG5avtpbNclYIm_ggfwLBS25V8N47MEDpEJeouUM51QOO8BAqbu2nXZZX33j01DQRbqG0OL3r1cppSz5G3RZhTuuhOrfDVJG5DDYhFpYM18LQyXT60gidQLqYVYgQ8gDOjyKvsn4BHzuNq23j905Vp75DRiGFzjJkv9kLpnaBIoxKyG46C3rc-TrmoRKIosBZdiJLqvQ9llxxKxEwHWj3ryw"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Jordan Lee</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">5 hours ago</p>
+</div>
+</div>
+<div class="flex gap-xs text-primary">
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<div class="flex items-center gap-md bg-surface p-sm rounded-lg mb-md">
+<img class="w-12 h-12 rounded object-cover" data-alt="Vinyl record texture showing tight grooves lit from the side by dramatic cold blue light against a pitch black background. Minimalist, high contrast, corporate dark mode aesthetic suitable for album art thumbnail." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-NDlFk6hyR4IdwGzU-r7p-iK5qWCijFbp3IwQYV1yXP_dWGwZ8oYcRprfnTgFuRw0LhMIEThqXo52QFswBb7HW1jmgtPzvhA_7z1m4vRhZW6kWQKwQi2OWgYIADl5OEcM4t2ycLpxXRTWEAS6q6TpRJW9j6KY4oAsSH5olKYtCnY29f2B42PMmnzWjiWLYnoAoOOahKEsUM8BgrYeuoI3cibiX6Q0Bd7yw3lo3VYyAHZjxIg7NGfQYnuohdjmf_soTkRK_q23nw"/>
+<div>
+<p class="font-body-md text-body-md font-bold text-on-surface">Lazarus</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">David Bowie</p>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md leading-relaxed line-clamp-3">
+                        A hauntingly beautiful final statement. The bassline alone carries so much emotional weight, and the brass section feels like a funeral march played in a jazz club. Flawless execution.
+                    </p>
+<div class="flex items-center gap-lg border-t border-surface-container-high pt-sm">
+<button class="flex items-center gap-xs text-on-surface-variant hover:text-primary transition-colors group">
+<span class="material-symbols-outlined text-[20px] group-active:scale-90 transition-transform" data-icon="thumb_up">thumb_up</span>
+<span class="font-label-sm text-label-sm">156</span>
+</button>
+<button class="flex items-center gap-xs text-on-surface-variant hover:text-error transition-colors group">
+<span class="material-symbols-outlined text-[20px] group-active:scale-90 transition-transform" data-icon="thumb_down">thumb_down</span>
+</button>
+</div>
+</article>
+<!-- Skeleton Loader -->
+<div class="bg-surface-container-low rounded-xl p-md border border-surface-container-high animate-pulse opacity-50">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest"></div>
+<div class="flex flex-col gap-unit">
+<div class="h-3 w-24 bg-surface-container-highest rounded"></div>
+<div class="h-2 w-16 bg-surface-container-highest rounded"></div>
+</div>
+</div>
+<div class="h-4 w-20 bg-surface-container-highest rounded"></div>
+</div>
+<div class="flex items-center gap-md bg-surface p-sm rounded-lg mb-md">
+<div class="w-12 h-12 rounded bg-surface-container-highest"></div>
+<div class="flex flex-col gap-unit">
+<div class="h-4 w-32 bg-surface-container-highest rounded"></div>
+<div class="h-3 w-20 bg-surface-container-highest rounded"></div>
+</div>
+</div>
+<div class="flex flex-col gap-unit mb-md">
+<div class="h-4 w-full bg-surface-container-highest rounded"></div>
+<div class="h-4 w-5/6 bg-surface-container-highest rounded"></div>
+<div class="h-4 w-4/6 bg-surface-container-highest rounded"></div>
+</div>
+<div class="h-6 w-1/4 bg-surface-container-highest rounded mt-sm"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface-container/95 dark:bg-surface-container/95 backdrop-blur-lg docked full-width bottom-0 fixed z-50 bg-surface-container-high dark:bg-surface-container-high flat no shadows fixed bottom-0 w-full z-50 flex justify-around items-center pt-sm pb-lg px-md md:hidden border-t-0">
+<button class="flex flex-col items-center justify-center text-primary font-bold hover:text-on-surface transition-colors active:scale-90 transition-all duration-150">
+<span class="material-symbols-outlined mb-xs" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors active:scale-90 transition-all duration-150">
+<span class="material-symbols-outlined mb-xs" data-icon="search">search</span>
+<span class="font-label-sm text-label-sm">Search</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors active:scale-90 transition-all duration-150">
+<span class="material-symbols-outlined mb-xs" data-icon="add_circle">add_circle</span>
+<span class="font-label-sm text-label-sm">Write</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors active:scale-90 transition-all duration-150">
+<span class="material-symbols-outlined mb-xs" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</button>
+</nav>
+</body></html>

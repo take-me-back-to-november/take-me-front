@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Take Me - User Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#53e076",
+                      "secondary-container": "#4a4949",
+                      "secondary-fixed-dim": "#c8c6c5",
+                      "tertiary-fixed": "#e3e2e2",
+                      "on-primary-fixed-variant": "#005320",
+                      "on-error": "#690005",
+                      "error": "#ffb4ab",
+                      "on-tertiary-container": "#373838",
+                      "tertiary-container": "#a1a1a1",
+                      "background": "#0e150e",
+                      "surface": "#0e150e",
+                      "secondary": "#c8c6c5",
+                      "on-surface-variant": "#bccbb9",
+                      "primary": "#53e076",
+                      "on-secondary-fixed": "#1c1b1b",
+                      "on-primary-container": "#004118",
+                      "primary-fixed": "#72fe8f",
+                      "on-primary": "#003914",
+                      "tertiary": "#c7c6c6",
+                      "surface-container-low": "#161d16",
+                      "outline": "#869585",
+                      "on-tertiary-fixed-variant": "#464747",
+                      "on-surface": "#dde5d9",
+                      "surface-container-high": "#242c24",
+                      "inverse-on-surface": "#2b322a",
+                      "inverse-surface": "#dde5d9",
+                      "on-background": "#dde5d9",
+                      "tertiary-fixed-dim": "#c7c6c6",
+                      "surface-container-highest": "#2f372e",
+                      "surface-variant": "#2f372e",
+                      "on-secondary-fixed-variant": "#474646",
+                      "surface-container": "#1a211a",
+                      "surface-dim": "#0e150e",
+                      "outline-variant": "#3d4a3d",
+                      "primary-fixed-dim": "#53e076",
+                      "on-secondary": "#313030",
+                      "surface-bright": "#333b33",
+                      "surface-container-lowest": "#091009",
+                      "primary-container": "#1db954",
+                      "on-tertiary": "#2f3131",
+                      "on-error-container": "#ffdad6",
+                      "inverse-primary": "#006e2d",
+                      "error-container": "#93000a",
+                      "secondary-fixed": "#e5e2e1",
+                      "on-secondary-container": "#bab8b7",
+                      "on-primary-fixed": "#002108",
+                      "on-tertiary-fixed": "#1a1c1c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "lg": "24px",
+                      "container-margin": "24px",
+                      "md": "16px",
+                      "unit": "4px",
+                      "xl": "40px",
+                      "sm": "8px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Hanken Grotesk"],
+                      "headline-lg-mobile": ["Hanken Grotesk"],
+                      "label-md": ["Hanken Grotesk"],
+                      "body-lg": ["Hanken Grotesk"],
+                      "display": ["Hanken Grotesk"],
+                      "label-sm": ["Hanken Grotesk"],
+                      "headline-lg": ["Hanken Grotesk"],
+                      "body-md": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "headline-md": ["20px", { "lineHeight": "1.4", "fontWeight": "700" }],
+                      "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                      "label-md": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                      "body-lg": ["16px", { "lineHeight": "1.5", "fontWeight": "500" }],
+                      "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                      "label-sm": ["11px", { "lineHeight": "1.2", "fontWeight": "400" }],
+                      "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                      "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body {
+            background-color: #121212;
+            color: #dde5d9;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        /* Hide scrollbar for clean look */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background min-h-screen flex flex-col font-sans">
+<!-- TopAppBar -->
+<header class="bg-surface/90 dark:bg-surface/90 backdrop-blur-md sticky top-0 w-full z-40 bg-surface dark:bg-surface">
+<div class="flex justify-between items-center w-full px-container-margin py-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" data-icon="music_note" data-weight="fill" style="font-variation-settings: 'FILL' 1;">music_note</span>
+<span class="font-display text-headline-lg-mobile md:text-headline-lg text-primary tracking-tighter">Take Me</span>
+</div>
+<button aria-label="Settings" class="p-2 rounded-full hover:bg-secondary-container/50 transition-colors active:scale-95 transition-transform duration-200">
+<span class="material-symbols-outlined text-on-surface" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col px-container-margin pb-[100px] max-w-[1440px] mx-auto w-full md:px-xl">
+<!-- Profile Header Section -->
+<section class="mt-xl flex flex-col items-center justify-center text-center pb-xl border-b border-surface-container-high/50">
+<div class="relative mb-md group cursor-pointer">
+<img alt="User Avatar" class="w-32 h-32 rounded-full object-cover border-4 border-surface shadow-lg z-10 relative" data-alt="A close-up portrait of an individual in a late-night setting. The lighting is dark and cinematic, with moody shadows and a soft, ethereal glow on the subject's face. The aesthetic aligns with a dark-mode music streaming app, emphasizing an atmospheric, high-contrast, modern portrait style against a deep black background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvnQtS3C4-odbX7DYTQVo-ONbz10st_q-2SvKBbm4NLSbS7ECFG4sH3-P3R3HfW3vBeMFBmAGKqlzIo5ki-E79xr2nLNULufb2gQvBqc-mA61jvMuwvxtIXwgnpBdpfpgcarhinDl_tnemhiTrACczHHqGZxdObVgnEdDQ1B5a7nNKdqx8ytMhyEZWCyQVxGM3qqEqe1cG0Xb_jd8WQdK-ifnJffOl3VGJNDIpJavWPdB28TQPQ78CI1Y3Eq0EXaQgXbNzPrJIHg"/>
+<!-- Subtle glow behind avatar -->
+<div class="absolute inset-0 rounded-full bg-primary/20 blur-xl scale-110 z-0"></div>
+</div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">Elena Rivers</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">elena.streams@example.com</p>
+<!-- Spotify Connected Badge -->
+<div class="flex items-center gap-xs bg-surface-container-high px-md py-sm rounded-full mb-lg border border-outline-variant/30">
+<div class="w-5 h-5 rounded-full bg-[#1DB954] flex items-center justify-center">
+<span class="material-symbols-outlined text-black text-[12px]" data-icon="check" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface">Linked to Spotify</span>
+</div>
+<!-- Disconnect Button -->
+<button class="px-lg py-sm rounded-full border border-outline text-on-surface font-label-md text-label-md hover:bg-surface-container-highest transition-colors active:scale-95 duration-200">
+                Disconnect Spotify
+            </button>
+</section>
+<!-- Stats Overview (Bento-ish) -->
+<section class="mt-lg grid grid-cols-2 md:grid-cols-4 gap-sm">
+<div class="bg-[#181818] p-md rounded-lg flex flex-col items-center justify-center hover:bg-[#282828] transition-colors cursor-pointer">
+<span class="font-headline-md text-headline-md text-on-surface">142</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-xs">Reviews</span>
+</div>
+<div class="bg-[#181818] p-md rounded-lg flex flex-col items-center justify-center hover:bg-[#282828] transition-colors cursor-pointer">
+<span class="font-headline-md text-headline-md text-on-surface">89</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-xs">Followers</span>
+</div>
+<div class="bg-[#181818] p-md rounded-lg flex flex-col items-center justify-center hover:bg-[#282828] transition-colors cursor-pointer">
+<span class="font-headline-md text-headline-md text-on-surface">115</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-xs">Following</span>
+</div>
+<div class="bg-[#181818] p-md rounded-lg flex flex-col items-center justify-center hover:bg-[#282828] transition-colors cursor-pointer">
+<span class="font-headline-md text-headline-md text-primary">Top 5%</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mt-xs">Listener</span>
+</div>
+</section>
+<!-- My Reviews Section (Empty State) -->
+<section class="mt-xl flex-grow flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-lg">My Reviews</h2>
+<!-- Placeholder State -->
+<div class="flex-grow flex flex-col items-center justify-center py-xl bg-[#181818]/50 rounded-xl border border-surface-container-high border-dashed mt-sm">
+<span class="material-symbols-outlined text-[48px] text-surface-container-highest mb-md" data-icon="rate_review">rate_review</span>
+<p class="font-body-lg text-body-lg text-on-surface-variant text-center max-w-[300px]">Your reviews will appear here soon.</p>
+<button class="mt-lg px-xl py-md rounded-full bg-primary text-black font-label-md text-label-md hover:bg-primary-fixed transition-colors active:scale-95 duration-200 flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                    Write a Review
+                </button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden bg-surface-container/95 dark:bg-surface-container/95 backdrop-blur-lg fixed bottom-0 w-full z-50 flex justify-around items-center pt-sm pb-lg px-md bg-surface-container-high dark:bg-surface-container-high">
+<!-- Home (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors active:scale-90 transition-all duration-150 p-2" href="#">
+<span class="material-symbols-outlined mb-xs" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<!-- Search (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors active:scale-90 transition-all duration-150 p-2" href="#">
+<span class="material-symbols-outlined mb-xs" data-icon="search">search</span>
+<span class="font-label-sm text-label-sm">Search</span>
+</a>
+<!-- Write (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors active:scale-90 transition-all duration-150 p-2" href="#">
+<span class="material-symbols-outlined mb-xs" data-icon="add_circle">add_circle</span>
+<span class="font-label-sm text-label-sm">Write</span>
+</a>
+<!-- Profile (Active) -->
+<a class="flex flex-col items-center justify-center text-primary font-bold hover:text-on-surface transition-colors active:scale-90 transition-all duration-150 p-2" href="#">
+<span class="material-symbols-outlined mb-xs" data-icon="person" data-weight="fill" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<!-- Desktop Side Nav (Hidden on Mobile) -->
+<nav class="hidden md:flex flex-col fixed left-0 top-[72px] bottom-0 w-[240px] bg-surface border-r border-surface-container-high pt-xl px-md z-30">
+<ul class="space-y-sm">
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-[#282828] hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-body-md text-body-md">Home</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-[#282828] hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-body-md text-body-md">Search</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-on-surface-variant hover:bg-[#282828] hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+<span class="font-body-md text-body-md">Write</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-md px-md py-sm rounded-lg bg-[#282828] text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="person" data-weight="fill" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-body-md text-body-md font-bold">Profile</span>
+</a>
+</li>
+</ul>
+</nav>
+</body></html>
