@@ -16,6 +16,7 @@ import { Card, CardFooter } from "./Card";
 import { CardAuthorHeader } from "./CardAuthorHeader";
 import { Icon } from "./Icon";
 import { ReviewComments } from "./ReviewComments";
+import { SongPreviewPlayButton } from "./SongPreviewPlayButton";
 import { TextActionButton } from "./TextActionButton";
 
 interface ReviewCardProps {
@@ -179,17 +180,22 @@ export function ReviewCard({
 
       {showSongBlock && (
         <div className={layout.musicPreview}>
-          {coverUrl ? (
-            <img
-              src={coverUrl}
-              alt={title ? normalizeMusicText(title) : t("reviewCard.albumCover")}
-              className="h-12 w-12 shrink-0 rounded object-cover"
-            />
-          ) : (
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded bg-surface-container-high text-on-surface-variant">
-              <Icon name="album" size="md" />
-            </div>
-          )}
+          <div className="group relative shrink-0">
+            {coverUrl ? (
+              <img
+                src={coverUrl}
+                alt={title ? normalizeMusicText(title) : t("reviewCard.albumCover")}
+                className="h-12 w-12 shrink-0 rounded object-cover"
+              />
+            ) : (
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded bg-surface-container-high text-on-surface-variant">
+                <Icon name="album" size="md" />
+              </div>
+            )}
+            {reviewData.spotify_song_id && (
+              <SongPreviewPlayButton songId={reviewData.spotify_song_id} />
+            )}
+          </div>
           {(title || artist || album) && (
             <div className={layout.truncate}>
               {title && (

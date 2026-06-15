@@ -30,7 +30,7 @@ export function HomePage() {
       setLoadingReviews(true);
       setError(null);
       try {
-        const feed = await getReviews(token!);
+        const feed = await getReviews(token!, { orderBy: "-created_at" });
         setReviews(feed);
       } catch (err) {
         setError(getApiErrorMessage(err, t, "home.loadError"));
