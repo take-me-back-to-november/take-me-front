@@ -42,7 +42,7 @@ export function ConnectSpotifyPage() {
     setIsConnecting(true);
     try {
       const { url } = await getSpotifyAuthUrl(token);
-      beginSpotifyLink();
+      await beginSpotifyLink();
       window.location.href = url;
     } catch (err) {
       setError(getApiErrorMessage(err, t, "apiErrors.spotifyConnectionFailed"));

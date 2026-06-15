@@ -62,6 +62,17 @@
     "missingParams": "Invalid return link. Go back and try connecting again.",
     "error": "Could not connect Spotify. Please try again."
   },
+  "notFound": {
+    "title": "Page not found",
+    "description": "This address does not exist in Take Me.",
+    "goHome": "Go to home",
+    "goBack": "Go back"
+  },
+  "errorBoundary": {
+    "title": "Something broke in the app",
+    "description": "Reload the page to try again.",
+    "reload": "Reload"
+  },
   "home": {
     "topTracks": "Your Top Tracks",
     "connectSpotifyHint": "Connect Spotify to see your top tracks.",
@@ -206,6 +217,8 @@
     "invalidGoogleToken": "Invalid Google ID token",
     "signInFailed": "Unable to sign in. Please try again.",
     "reviewCreateFailed": "Failed to create review",
-    "songNotFound": "Failed to get song from Spotify"
+    "songNotFound": "Failed to get song from Spotify",
+    "networkError": "Could not reach the server. Check your connection.",
+    "serviceUnavailable": "Service temporarily unavailable. Please try again."
   }
 }

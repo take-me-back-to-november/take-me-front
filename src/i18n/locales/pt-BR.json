@@ -62,6 +62,17 @@
     "missingParams": "Link de retorno inválido. Volte e tente conectar novamente.",
     "error": "Não foi possível conectar o Spotify. Tente novamente."
   },
+  "notFound": {
+    "title": "Página não encontrada",
+    "description": "Esse endereço não existe no Take Me.",
+    "goHome": "Ir para o início",
+    "goBack": "Voltar"
+  },
+  "errorBoundary": {
+    "title": "Algo quebrou no app",
+    "description": "Recarregue a página para tentar de novo.",
+    "reload": "Recarregar"
+  },
   "home": {
     "topTracks": "Suas faixas favoritas",
     "connectSpotifyHint": "Conecte o Spotify para ver suas faixas favoritas.",
@@ -206,6 +217,8 @@
     "invalidGoogleToken": "Token do Google inválido",
     "signInFailed": "Não foi possível entrar. Tente novamente.",
     "reviewCreateFailed": "Falha ao criar avaliação",
-    "songNotFound": "Música não encontrada no Spotify"
+    "songNotFound": "Música não encontrada no Spotify",
+    "networkError": "Não foi possível conectar ao servidor. Verifique sua conexão.",
+    "serviceUnavailable": "Serviço temporariamente indisponível. Tente novamente."
   }
 }

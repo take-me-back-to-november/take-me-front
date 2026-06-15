@@ -32,7 +32,7 @@ export function SplashPage() {
       } else {
         navigate("/home", { replace: true });
       }
-    }, 2200);
+    }, token ? 0 : 2200);
 
     return () => clearTimeout(timer);
   }, [isLoading, token, spotifyConnected, navigate]);

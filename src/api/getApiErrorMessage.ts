@@ -23,7 +23,14 @@ export function getApiErrorMessage(
   t: TFunction,
   fallbackKey: string,
 ): string {
+  if (error instanceof TypeError) {
+    return t("apiErrors.networkError");
+  }
+
   if (error instanceof ApiError) {
+    if (error.status >= 502 && error.status <= 503) {
+      return t("apiErrors.serviceUnavailable");
+    }
     const mappedKey = ERROR_MAP[error.message];
     if (mappedKey) return t(mappedKey);
     return t("apiErrors.requestFailed", { status: error.status });
