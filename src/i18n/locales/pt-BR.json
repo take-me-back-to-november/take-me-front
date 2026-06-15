@@ -12,7 +12,8 @@
     "stay": "Continuar no app",
     "reviewer": "Crítico",
     "defaultUser": "Usuário Take Me",
-    "logoAlt": "Logo Take Me"
+    "logoAlt": "Logo Take Me",
+    "delete": "Excluir"
   },
   "nav": {
     "home": "Início",
@@ -152,7 +153,8 @@
     "placeholder": "Escreva um comentário...",
     "empty": "Nenhum comentário ainda. Comece a conversa.",
     "loadError": "Falha ao carregar comentários.",
-    "postError": "Falha ao publicar comentário."
+    "postError": "Falha ao publicar comentário.",
+    "delete": "Excluir"
   },
   "trackCarousel": {
     "review": "Avaliar"

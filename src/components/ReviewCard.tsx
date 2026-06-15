@@ -168,7 +168,7 @@ export function ReviewCard({
                     className="flex w-full items-center gap-sm px-md py-sm text-left text-body-md text-error transition-default hover:bg-surface-container-highest active:scale-[0.99]"
                   >
                     <Icon name="delete" size="sm" />
-                    {t("reviewCard.deleteReview")}
+                    {t("common.delete")}
                   </button>
                 </div>
               )}

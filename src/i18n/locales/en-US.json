@@ -12,7 +12,8 @@
     "stay": "Stay in the app",
     "reviewer": "Reviewer",
     "defaultUser": "Take Me User",
-    "logoAlt": "Take Me Logo"
+    "logoAlt": "Take Me Logo",
+    "delete": "Delete"
   },
   "nav": {
     "home": "Home",
@@ -152,7 +153,8 @@
     "placeholder": "Write a comment...",
     "empty": "No comments yet. Start the conversation.",
     "loadError": "Failed to load comments.",
-    "postError": "Failed to post comment."
+    "postError": "Failed to post comment.",
+    "delete": "Delete"
   },
   "trackCarousel": {
     "review": "Review"
