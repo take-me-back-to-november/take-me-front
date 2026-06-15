@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getApiErrorMessage } from "@/api/getApiErrorMessage";
-import { getReviews } from "@/api/reviews";
+import { getReviews, deleteReview } from "@/api/reviews";
 import { Button } from "@/components/Button";
 import { FeedSwitcher, type FeedTab } from "@/components/FeedSwitcher";
 import { Icon } from "@/components/Icon";
 import { PageTransition } from "@/components/PageTransition";
-import { ReviewCard } from "@/components/ReviewCard";
+import { ReviewList } from "@/components/ReviewList";
 import { SpotifyConnectPrompt } from "@/components/SpotifyConnectPrompt";
 import { useAuth } from "@/context/AuthContext";
 import type { SongReview } from "@/types/api";
@@ -20,6 +20,7 @@ export function HomePage() {
   const [reviews, setReviews] = useState<SongReview[]>([]);
   const [loadingReviews, setLoadingReviews] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [deletingReviewId, setDeletingReviewId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!token || feedTab !== "general" || !spotifyConnected) {
@@ -47,6 +48,19 @@ export function HomePage() {
     void load();
   }, [token, t, feedTab, spotifyConnected]);
 
+  const handleDeleteReview = async (reviewId: string) => {
+    if (!token) return;
+    setDeletingReviewId(reviewId);
+    try {
+      await deleteReview(token, reviewId);
+      setReviews((current) => current.filter((review) => review.id !== reviewId));
+    } catch (err) {
+      setError(getApiErrorMessage(err, t, "writeReview.deleteError"));
+    } finally {
+      setDeletingReviewId(null);
+    }
+  };
+
   return (
     <PageTransition>
       <main className="mx-auto w-full max-w-[1440px] pb-xl">
@@ -66,21 +80,21 @@ export function HomePage() {
           )}
 
           {feedTab === "following" ? (
-            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-surface-container-high bg-surface-container-high/50 py-xl">
-              <Icon
-                name="group"
-                size="xl"
-                className="mb-md text-surface-container-highest"
+            <div className="mx-auto flex w-full max-w-content-md flex-col items-center rounded-xl border border-surface-container-high bg-surface-container-high/50 p-md">
+              <img
+                src="/gabriel_fim_da_escravidao.jpg"
+                alt={t("home.followingGabrielAlt")}
+                className="mb-lg w-full max-h-[70vh] rounded-lg object-contain shadow-lg"
               />
-              <p className="text-headline-md text-on-surface">
+              <p className="w-full text-headline-md text-center text-on-surface">
                 {t("home.followingComingSoon")}
               </p>
-              <p className="mt-sm max-w-[280px] text-center text-body-md text-on-surface-variant">
+              <p className="mt-sm w-full text-center text-body-md text-on-surface-variant">
                 {t("home.followingComingSoonHint")}
               </p>
             </div>
           ) : spotifyConnected ? (
-            <div className="flex flex-col gap-md">
+            <div className="flex flex-col">
               {loadingReviews ? (
                 <div className="rounded-xl border border-surface-container-high bg-surface-container-low p-md opacity-50">
                   <div className="mb-sm flex items-center gap-sm">
@@ -93,19 +107,16 @@ export function HomePage() {
                   <div className="h-20 rounded shimmer" />
                 </div>
               ) : reviews.length > 0 ? (
-                reviews.map((review, index) => (
-                  <div
-                    key={review.id}
-                    className="animate-stagger"
-                    style={{ animationDelay: `${Math.min(index, 5) * 60}ms` }}
-                  >
-                    <ReviewCard
-                      review={review}
-                      authorName={user?.name ?? t("common.reviewer")}
-                      authorAvatar={user?.picture_url ?? undefined}
-                    />
-                  </div>
-                ))
+                <ReviewList
+                  reviews={reviews}
+                  getAuthorName={(review) => review.user?.name ?? t("common.reviewer")}
+                  getAuthorAvatar={(review) => review.user?.picture_url ?? undefined}
+                  getOnDelete={(review) =>
+                    review.user?.id === user?.id && deletingReviewId !== review.id
+                      ? () => void handleDeleteReview(review.id)
+                      : undefined
+                  }
+                />
               ) : (
                 <div className="animate-fade-in flex flex-col items-center justify-center rounded-xl border border-dashed border-surface-container-high bg-surface-container-high/50 py-xl">
                   <div className="pulse-loader mb-md flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">

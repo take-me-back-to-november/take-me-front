@@ -1,3 +1,4 @@
+import { clearProfilePictureCache } from "@/lib/profilePictureCache";
 import { getItem, removeItem, setItem } from "@/lib/persistence";
 import type { User } from "@/types/api";
 
@@ -57,5 +58,6 @@ export async function clearSession(): Promise<void> {
     removeItem(REFRESH_TOKEN_KEY),
     removeItem(USER_KEY),
     removeItem(SPOTIFY_CONNECTED_KEY),
+    clearProfilePictureCache(),
   ]);
 }

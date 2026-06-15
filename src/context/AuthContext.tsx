@@ -9,10 +9,11 @@ import {
 } from "react";
 import { signInWithGoogle } from "@/api/auth";
 import { refreshSessionIfNeeded, setAuthHandlers } from "@/api/client";
-import { getUserStatus } from "@/api/me";
+import { getUserResume } from "@/api/me";
 import { removeSpotifyLink } from "@/api/spotify";
 import { getApiErrorMessage } from "@/api/getApiErrorMessage";
 import i18n from "@/i18n";
+import { prefetchProfilePicture } from "@/lib/profilePictureCache";
 import {
   clearSession,
   getSpotifyConnected,
@@ -75,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       setToken(activeToken);
       setUser(activeToken ? storedUser : null);
+      prefetchProfilePicture(storedUser?.picture_url);
 
       if (!activeToken) {
         setSpotifyConnectedState(false);
@@ -83,9 +85,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       try {
-        const status = await getUserStatus(activeToken);
-        await setSpotifyConnected(status.spotify_connected);
-        setSpotifyConnectedState(status.spotify_connected);
+        const resume = await getUserResume(activeToken);
+        prefetchProfilePicture(resume.picture_url);
+        await setSpotifyConnected(resume.spotify_connected);
+        setSpotifyConnectedState(resume.spotify_connected);
       } catch {
         setSpotifyConnectedState(connected);
       } finally {
@@ -101,9 +104,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const status = await getUserStatus(token);
-    await setSpotifyConnected(status.spotify_connected);
-    setSpotifyConnectedState(status.spotify_connected);
+    const resume = await getUserResume(token);
+    await setSpotifyConnected(resume.spotify_connected);
+    setSpotifyConnectedState(resume.spotify_connected);
   }, [token]);
 
   const unlinkSpotify = useCallback(async () => {
@@ -126,6 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       );
       setToken(response.access_token);
       setUser(response.user);
+      prefetchProfilePicture(response.user.picture_url);
       setSpotifyConnectedState(false);
     } catch (error) {
       const message = getApiErrorMessage(error, i18n.t.bind(i18n), "apiErrors.signInFailed");

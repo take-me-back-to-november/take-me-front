@@ -175,11 +175,13 @@ export function CurrentlyPlayingCard({ token }: CurrentlyPlayingCardProps) {
           {t("profile.nowPlaying")}
         </p>
         <span
-          className={`inline-flex items-center gap-xs rounded-full px-sm py-xs text-label-sm ${
+          className={`inline-flex h-7 w-10 items-center justify-center rounded-full text-label-sm ${
             song.is_playing
               ? "now-playing-badge--active bg-spotify/15 text-spotify"
               : "bg-surface-container-high text-on-surface-variant"
           }`}
+          aria-label={song.is_playing ? t("profile.playing") : t("profile.paused")}
+          role="img"
         >
           {song.is_playing ? (
             <span className="now-playing-bars" aria-hidden="true">
@@ -190,7 +192,6 @@ export function CurrentlyPlayingCard({ token }: CurrentlyPlayingCardProps) {
           ) : (
             <Icon name="pause" size="sm" />
           )}
-          {song.is_playing ? t("profile.playing") : t("profile.paused")}
         </span>
       </div>
 

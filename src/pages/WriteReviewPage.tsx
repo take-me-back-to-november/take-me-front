@@ -2,18 +2,26 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getApiErrorMessage } from "@/api/getApiErrorMessage";
-import { createReview, getReviews } from "@/api/reviews";
+import {
+  createReview,
+  deleteReview,
+  getAllReviewsForSong,
+  getMyReviewForSong,
+} from "@/api/reviews";
 import { Button } from "@/components/Button";
 import { Icon } from "@/components/Icon";
+import { CharacterLimitIndicator } from "@/components/CharacterLimitIndicator";
 import { PageTransition } from "@/components/PageTransition";
 import { ReviewCard } from "@/components/ReviewCard";
+import { ReviewList } from "@/components/ReviewList";
 import { SpotifyConnectPrompt } from "@/components/SpotifyConnectPrompt";
 import { StarRating } from "@/components/StarRating";
 import { useAuth } from "@/context/AuthContext";
 import { addMyReviewId } from "@/lib/myReviews";
 import type { SongReview, SpotifySong } from "@/types/api";
 
-const MAX_LENGTH = 1000;
+const MAX_TITLE_LENGTH = 50;
+const MAX_TEXT_LENGTH = 1000;
 
 type SubmitState = "idle" | "submitting" | "success";
 
@@ -21,42 +29,61 @@ export function WriteReviewPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
-  const { token, spotifyConnected } = useAuth();
+  const { token, user, spotifyConnected } = useAuth();
   const song = (location.state as { song?: SpotifySong } | null)?.song;
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.key]);
+
   const [stars, setStars] = useState(0);
+  const [title, setTitle] = useState("");
   const [text, setText] = useState("");
+  const [titleFocused, setTitleFocused] = useState(false);
+  const [textFocused, setTextFocused] = useState(false);
   const [comments, setComments] = useState<SongReview[]>([]);
+  const [myReview, setMyReview] = useState<SongReview | null>(null);
   const [loadingComments, setLoadingComments] = useState(true);
   const [commentsError, setCommentsError] = useState<string | null>(null);
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const [error, setError] = useState<string | null>(null);
 
   const isSubmitting = submitState === "submitting";
-  const canSubmit = stars >= 1 && text.trim().length > 0 && submitState === "idle";
+  const hasExistingReview = myReview !== null;
+  const canSubmit =
+    !hasExistingReview &&
+    stars >= 1 &&
+    title.trim().length > 0 &&
+    text.trim().length > 0 &&
+    submitState === "idle";
 
-  useEffect(() => {
-    if (!token || !song) {
+  const loadPageData = async () => {
+    if (!token || !song?.id) {
       setLoadingComments(false);
       return;
     }
 
-    async function loadComments() {
-      setLoadingComments(true);
-      setCommentsError(null);
-      try {
-        const reviews = await getReviews(token!, 0, 20, "-created_at", song!.id);
-        setComments(reviews);
-      } catch (err) {
-        setCommentsError(getApiErrorMessage(err, t, "writeReview.commentsError"));
-        setComments([]);
-      } finally {
-        setLoadingComments(false);
-      }
-    }
+    setLoadingComments(true);
+    setCommentsError(null);
+    try {
+      const [reviews, existingReview] = await Promise.all([
+        getAllReviewsForSong(token, song.id),
+        user?.id ? getMyReviewForSong(token, song.id, user.id) : null,
+      ]);
 
-    void loadComments();
-  }, [token, song, t]);
+      setComments(reviews);
+      setMyReview(existingReview);
+    } catch (err) {
+      setCommentsError(getApiErrorMessage(err, t, "writeReview.commentsError"));
+      setComments([]);
+    } finally {
+      setLoadingComments(false);
+    }
+  };
+
+  useEffect(() => {
+    void loadPageData();
+  }, [token, song?.id, t, user?.id]);
 
   if (!song) {
     return (
@@ -79,6 +106,7 @@ export function WriteReviewPage() {
     setError(null);
     try {
       const review = await createReview(token, {
+        title: title.trim(),
         text: text.trim(),
         stars_count: stars,
         spotify_song_id: song.id,
@@ -93,8 +121,29 @@ export function WriteReviewPage() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!token || !myReview || submitState !== "idle") return;
+
+    setSubmitState("submitting");
+    setError(null);
+    try {
+      await deleteReview(token, myReview.id);
+      setMyReview(null);
+      setStars(0);
+      setTitle("");
+      setText("");
+      setSubmitState("success");
+      await loadPageData();
+      await new Promise((resolve) => setTimeout(resolve, 550));
+      setSubmitState("idle");
+    } catch (err) {
+      setSubmitState("idle");
+      setError(getApiErrorMessage(err, t, "writeReview.deleteError"));
+    }
+  };
+
   const fabClassName = [
-    "fab-publish safe-bottom",
+    "fab-publish",
     isSubmitting ? "is-submitting" : "",
     submitState === "success" ? "is-success" : "",
   ]
@@ -149,31 +198,85 @@ export function WriteReviewPage() {
 
         <section className="relative flex flex-col gap-xl px-container-margin">
           {spotifyConnected ? (
-            <>
-              <div className="flex flex-col items-center gap-md">
-                <label className="text-label-md tracking-widest text-on-surface-variant uppercase">
-                  {t("writeReview.rateTrack")}
-                </label>
-                <StarRating value={stars} interactive size={36} onChange={setStars} />
-              </div>
-
-              <div className="flex flex-col gap-sm">
-                <textarea
-                  value={text}
-                  onChange={(e) => setText(e.target.value.slice(0, MAX_LENGTH))}
-                  placeholder={t("writeReview.placeholder")}
-                  className="min-h-[180px] w-full resize-y rounded-lg border-none bg-surface-container-high p-md text-body-lg text-on-surface placeholder:text-on-surface-variant/50 transition-default focus:ring-1 focus:ring-primary focus:outline-none"
-                />
-                <div className="flex items-center justify-end text-label-sm text-on-surface-variant">
-                  <span className={text.length >= MAX_LENGTH ? "text-error" : ""}>
-                    {text.length}
-                  </span>
-                  <span>/{MAX_LENGTH}</span>
+            hasExistingReview ? (
+              <>
+                <p className="text-center text-body-md text-on-surface-variant">
+                  {t("writeReview.alreadyReviewed")}
+                </p>
+                {myReview && (
+                  <ReviewCard
+                    review={myReview}
+                    song={song}
+                    authorName={user?.name ?? t("common.reviewer")}
+                    authorAvatar={user?.picture_url ?? undefined}
+                  />
+                )}
+                <Button
+                  variant="ghost"
+                  onClick={() => void handleDelete()}
+                  disabled={isSubmitting}
+                  className="self-center text-error hover:text-error"
+                >
+                  {isSubmitting ? t("writeReview.deleting") : t("writeReview.deleteReview")}
+                </Button>
+                {error && <p className="text-body-md text-error">{error}</p>}
+              </>
+            ) : (
+              <>
+                <div className="flex justify-center">
+                  <StarRating value={stars} interactive size={36} onChange={setStars} />
                 </div>
-              </div>
 
-              {error && <p className="text-body-md text-error">{error}</p>}
-            </>
+                <div className="flex flex-col gap-sm">
+                  <label className="text-label-md tracking-widest text-on-surface-variant uppercase">
+                    {t("writeReview.reviewTitle")}
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value.slice(0, MAX_TITLE_LENGTH))}
+                      onFocus={() => setTitleFocused(true)}
+                      onBlur={() => setTitleFocused(false)}
+                      placeholder={t("writeReview.titlePlaceholder")}
+                      className="w-full rounded-lg border-none bg-surface-container-high px-md py-sm pr-xl text-body-lg text-on-surface placeholder:text-on-surface-variant/50 transition-default focus:ring-1 focus:ring-primary focus:outline-none"
+                    />
+                    <div className="absolute right-sm top-1/2 -translate-y-1/2">
+                      <CharacterLimitIndicator
+                        visible={titleFocused}
+                        length={title.length}
+                        max={MAX_TITLE_LENGTH}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-sm">
+                  <label className="text-label-md tracking-widest text-on-surface-variant uppercase">
+                    {t("writeReview.reviewBody")}
+                  </label>
+                  <div className="relative">
+                    <textarea
+                      value={text}
+                      onChange={(e) => setText(e.target.value.slice(0, MAX_TEXT_LENGTH))}
+                      onFocus={() => setTextFocused(true)}
+                      onBlur={() => setTextFocused(false)}
+                      placeholder={t("writeReview.placeholder")}
+                      className="min-h-[180px] w-full resize-y rounded-lg border-none bg-surface-container-high p-md pb-xl text-body-lg text-on-surface placeholder:text-on-surface-variant/50 transition-default focus:ring-1 focus:ring-primary focus:outline-none"
+                    />
+                    <div className="absolute right-sm bottom-sm">
+                      <CharacterLimitIndicator
+                        visible={textFocused}
+                        length={text.length}
+                        max={MAX_TEXT_LENGTH}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {error && <p className="text-body-md text-error">{error}</p>}
+              </>
+            )
           ) : (
             <SpotifyConnectPrompt variant="inline" />
           )}
@@ -196,17 +299,12 @@ export function WriteReviewPage() {
           ) : commentsError ? (
             <p className="text-body-md text-error">{commentsError}</p>
           ) : comments.length > 0 ? (
-            <div className="flex flex-col gap-md">
-              {comments.map((review, index) => (
-                <div
-                  key={review.id}
-                  className="animate-stagger"
-                  style={{ animationDelay: `${Math.min(index, 5) * 60}ms` }}
-                >
-                  <ReviewCard review={review} />
-                </div>
-              ))}
-            </div>
+            <ReviewList
+              reviews={comments}
+              getAuthorName={(review) => review.user?.name ?? t("common.reviewer")}
+              getAuthorAvatar={(review) => review.user?.picture_url ?? undefined}
+              getSong={() => song}
+            />
           ) : (
             <p className="text-body-md text-on-surface-variant">
               {t("writeReview.noComments")}
@@ -215,7 +313,7 @@ export function WriteReviewPage() {
         </section>
       </PageTransition>
 
-      {spotifyConnected && (
+      {spotifyConnected && !hasExistingReview && (
         <button
           type="button"
           onClick={() => void handleSubmit()}

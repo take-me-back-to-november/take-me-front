@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { type CredentialResponse } from "@react-oauth/google";
 import { useTranslation } from "react-i18next";
 import { GoogleSignInButton } from "@/components/GoogleSignInButton";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/context/AuthContext";
 
@@ -31,10 +30,6 @@ export function SignInPage() {
   return (
     <div className="relative min-h-dvh bg-background">
       <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-b from-surface-container-high/30 to-background" />
-
-      <div className="absolute top-0 right-0 z-20 p-container-margin pt-md">
-        <LanguageSwitcher size="sm" />
-      </div>
 
       <main className="relative z-10 mx-auto grid min-h-dvh w-full max-w-content-md grid-rows-[1fr_auto] px-container-margin">
         <section className="flex flex-col items-center pt-[14vh]">

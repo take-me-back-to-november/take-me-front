@@ -1,27 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  applySongReviewAction,
+  resolveSongReviewAction,
+  setSongReviewAction,
+} from "@/api/actions";
+import { useAuth } from "@/context/AuthContext";
+import { useRelativeTime } from "@/hooks/useRelativeTime";
+import { normalizeMusicText } from "@/lib/formatMusicText";
+import { formatLikeCount, getReviewUserAction } from "@/lib/reviewActions";
+import { interactive, layout, typography } from "@/lib/designSystem";
+import { cn } from "@/lib/cn";
+import type { ReviewActionType, SongReview, SpotifySong } from "@/types/api";
+import { Card, CardFooter } from "./Card";
+import { CardAuthorHeader } from "./CardAuthorHeader";
 import { Icon } from "./Icon";
-import { StarRating } from "./StarRating";
-import { useSpotifyGate } from "@/hooks/useSpotifyGate";
-import type { SongReview, SpotifySong } from "@/types/api";
+import { ReviewComments } from "./ReviewComments";
+import { TextActionButton } from "./TextActionButton";
 
 interface ReviewCardProps {
   review: SongReview;
   song?: SpotifySong;
   authorName?: string;
   authorAvatar?: string;
-}
-
-function useRelativeTime(dateString: string) {
-  const { t } = useTranslation();
-  const date = new Date(dateString);
-  const diffMs = Date.now() - date.getTime();
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-
-  if (diffHours < 1) return t("reviewCard.justNow");
-  if (diffHours < 24) return t("reviewCard.hoursAgo", { count: diffHours });
-  const diffDays = Math.floor(diffHours / 24);
-  return t("reviewCard.daysAgo", { count: diffDays });
+  onDelete?: () => void;
 }
 
 export function ReviewCard({
@@ -29,19 +31,53 @@ export function ReviewCard({
   song,
   authorName,
   authorAvatar,
+  onDelete,
 }: ReviewCardProps) {
-  const { t } = useTranslation();
-  const { canInteract, openConnectFlow } = useSpotifyGate();
-  const relativeTime = useRelativeTime(review.created_at);
+  const { t, i18n } = useTranslation();
+  const { token } = useAuth();
+  const [reviewData, setReviewData] = useState(review);
+  const [actionLoading, setActionLoading] = useState<ReviewActionType | null>(null);
+
+  useEffect(() => {
+    setReviewData(review);
+  }, [review]);
+
+  const relativeTime = useRelativeTime(reviewData.created_at);
+  const userAction = getReviewUserAction(reviewData);
+  const isLiked = userAction === "like";
+  const isDisliked = userAction === "unlike";
+  const likesCount = reviewData.likes_count ?? 0;
+  const formattedLikes = formatLikeCount(likesCount, i18n.language);
   const name = authorName ?? t("common.reviewer");
-  const coverUrl = song?.cover_url ?? review.image_url ?? undefined;
-  const title = song?.title ?? review.song_name;
-  const artist = song?.artist ?? review.song_artist;
-  const album = song?.album_title ?? review.song_album;
+  const coverUrl = song?.cover_url ?? reviewData.image_url ?? undefined;
+  const title = song?.title ?? reviewData.song_name;
+  const artist = song?.artist ?? reviewData.song_artist;
+  const album = song?.album_title ?? reviewData.song_album;
   const showSongBlock = coverUrl || title || artist || album;
   const [expanded, setExpanded] = useState(false);
   const [isClamped, setIsClamped] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const textRef = useRef<HTMLParagraphElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const handleAction = async (clicked: ReviewActionType) => {
+    if (!token || actionLoading) return;
+
+    const request = resolveSongReviewAction(reviewData, clicked);
+    const previous = reviewData;
+    const next = applySongReviewAction(reviewData, request);
+
+    setReviewData(next);
+    setActionLoading(clicked);
+
+    try {
+      await setSongReviewAction(token, reviewData.id, request);
+    } catch {
+      setReviewData(previous);
+    } finally {
+      setActionLoading(null);
+    }
+  };
 
   useEffect(() => {
     const element = textRef.current;
@@ -54,68 +90,117 @@ export function ReviewCard({
     checkClamped();
     window.addEventListener("resize", checkClamped);
     return () => window.removeEventListener("resize", checkClamped);
-  }, [review.text, expanded]);
+  }, [reviewData.text, expanded]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const handlePointerDown = (event: MouseEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [menuOpen]);
 
   const showReadMore = isClamped && !expanded;
   const showReadLess = expanded;
 
-  const handleReaction = () => {
-    if (!canInteract) {
-      openConnectFlow();
-    }
-  };
-
   return (
-    <article className="min-w-0 overflow-hidden rounded-xl border border-surface-container-high bg-surface-container-low p-md transition-default hover:bg-surface-container">
-      <div className="mb-sm flex items-start justify-between">
-        <div className="flex items-center gap-sm">
-          <div className="h-8 w-8 overflow-hidden rounded-full bg-surface-container-high">
-            {authorAvatar ? (
-              <img
-                src={authorAvatar}
-                alt={name}
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center text-on-surface-variant">
-                <Icon name="person" size="sm" />
-              </div>
-            )}
+    <Card variant="feed">
+      <header className={layout.cardHeader}>
+        <CardAuthorHeader
+          name={name}
+          avatarUrl={authorAvatar}
+          timestamp={relativeTime}
+          timestampDateTime={reviewData.created_at}
+        />
+        <div className="flex shrink-0 items-center gap-xs">
+          <div
+            className="flex items-center gap-[2px]"
+            aria-label={t("reviewCard.star", { count: reviewData.stars_count })}
+          >
+            <span className="text-label-md font-medium text-primary tabular-nums">
+              {reviewData.stars_count}
+            </span>
+            <Icon name="star" size="sm" filled className="text-primary" />
           </div>
-          <div>
-            <p className="text-label-md text-on-surface">{name}</p>
-            <p className="text-label-sm text-on-surface-variant">{relativeTime}</p>
-          </div>
+          {onDelete && (
+            <div ref={menuRef} className="relative">
+              <button
+                type="button"
+                aria-label={t("reviewCard.moreActions")}
+                aria-expanded={menuOpen}
+                aria-haspopup="menu"
+                onClick={() => setMenuOpen((open) => !open)}
+                className={cn(
+                  interactive.iconButton,
+                  menuOpen && "bg-surface-container-high text-on-surface",
+                )}
+              >
+                <Icon name="more_vert" size="sm" />
+              </button>
+
+              {menuOpen && (
+                <div
+                  role="menu"
+                  className="absolute right-0 top-[calc(100%+4px)] z-20 min-w-[168px] overflow-hidden rounded-xl border border-outline-variant/30 bg-surface-container-high py-xs shadow-[0_8px_24px_rgba(0,0,0,0.28)]"
+                >
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      onDelete();
+                    }}
+                    className="flex w-full items-center gap-sm px-md py-sm text-left text-body-md text-error transition-default hover:bg-surface-container-highest active:scale-[0.99]"
+                  >
+                    <Icon name="delete" size="sm" />
+                    {t("reviewCard.deleteReview")}
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
-        <StarRating value={review.stars_count} />
-      </div>
+      </header>
 
       {showSongBlock && (
-        <div className="mb-md flex items-center gap-md rounded-lg bg-surface p-sm">
+        <div className={layout.musicPreview}>
           {coverUrl ? (
             <img
               src={coverUrl}
-              alt={title ?? t("reviewCard.albumCover")}
-              className="h-12 w-12 rounded object-cover"
+              alt={title ? normalizeMusicText(title) : t("reviewCard.albumCover")}
+              className="h-12 w-12 shrink-0 rounded object-cover"
             />
           ) : (
-            <div className="flex h-12 w-12 items-center justify-center rounded bg-surface-container-high text-on-surface-variant">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded bg-surface-container-high text-on-surface-variant">
               <Icon name="album" size="md" />
             </div>
           )}
           {(title || artist || album) && (
-            <div className="min-w-0">
+            <div className={layout.truncate}>
               {title && (
-                <p className="truncate text-body-md text-on-surface">{title}</p>
+                <h4 className={typography.cardMusicTitle}>{normalizeMusicText(title)}</h4>
               )}
               {artist && (
-                <p className="truncate text-label-sm text-on-surface-variant">
-                  {artist}
-                </p>
+                <p className={typography.cardMusicMeta}>{normalizeMusicText(artist)}</p>
               )}
               {album && (
-                <p className="truncate text-label-sm text-on-surface-variant/80">
-                  {album}
+                <p className={cn(typography.cardMusicMeta, "text-on-surface-variant/80")}>
+                  {normalizeMusicText(album)}
                 </p>
               )}
             </div>
@@ -123,69 +208,84 @@ export function ReviewCard({
         </div>
       )}
 
-      <div className="mb-md min-w-0">
+      <section className="min-w-0">
+        {reviewData.title && (
+          <p className={typography.cardReviewTitle}>{reviewData.title}</p>
+        )}
+
         <p
           ref={textRef}
-          className={`break-words whitespace-pre-wrap text-body-md leading-relaxed text-on-surface-variant ${
-            expanded ? "" : "line-clamp-3"
-          }`}
+          className={cn(typography.cardBody, !expanded && "line-clamp-3")}
         >
-          {review.text}
+          {reviewData.text}
         </p>
         {(showReadMore || showReadLess) && (
-          <button
-            type="button"
-            onClick={() => setExpanded((value) => !value)}
-            className="mt-xs text-label-md font-semibold text-primary transition-default hover:text-primary-fixed active:scale-95"
-          >
+          <TextActionButton onClick={() => setExpanded((value) => !value)}>
             {expanded ? t("reviewCard.readLess") : t("reviewCard.readMore")}
-          </button>
+          </TextActionButton>
         )}
-      </div>
+      </section>
 
-      <div className="flex flex-col gap-xs border-t border-surface-container-high pt-sm">
-        {!canInteract && (
-          <p className="text-center text-label-sm text-on-surface-variant">
-            {t("spotifyGate.likeLocked")}
-          </p>
-        )}
-        <div className="flex items-center gap-xs">
-          <button
-            type="button"
-            aria-label={t("reviewCard.like")}
-            onClick={handleReaction}
-            className={`group inline-flex h-9 flex-1 items-center justify-center gap-xs rounded-full px-md transition-default active:scale-95 ${
-              canInteract
-                ? "text-on-surface-variant hover:bg-surface-container-high hover:text-primary"
-                : "cursor-not-allowed text-on-surface-variant/50 hover:bg-surface-container-high/60"
-            }`}
+      {token && (
+        <CardFooter>
+          <div
+            className="inline-flex h-8 items-stretch overflow-hidden rounded-full bg-surface-container-high"
+            role="group"
+            aria-label={t("reviewCard.reactions")}
           >
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center">
-              <Icon name="thumb_up" size="sm" className="leading-none" />
-            </span>
-            <span className="min-w-[1ch] text-label-md font-medium tabular-nums leading-none">
-              {review.likes_count}
-            </span>
-          </button>
-          <button
-            type="button"
-            aria-label={t("reviewCard.dislike")}
-            onClick={handleReaction}
-            className={`group inline-flex h-9 flex-1 items-center justify-center gap-xs rounded-full px-md transition-default active:scale-95 ${
-              canInteract
-                ? "text-on-surface-variant hover:bg-surface-container-high hover:text-error"
-                : "cursor-not-allowed text-on-surface-variant/50 hover:bg-surface-container-high/60"
-            }`}
-          >
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center">
-              <Icon name="thumb_down" size="sm" className="leading-none" />
-            </span>
-            <span className="min-w-[1ch] text-label-md font-medium tabular-nums leading-none">
-              {review.unlikes_count}
-            </span>
-          </button>
-        </div>
-      </div>
-    </article>
+            <button
+              type="button"
+              aria-label={t("reviewCard.likeWithCount", { count: likesCount })}
+              aria-pressed={isLiked}
+              disabled={actionLoading !== null}
+              onClick={() => void handleAction("like")}
+              className={cn(
+                "flex items-center gap-1.5 px-3",
+                interactive.reactionIdle,
+                isLiked && interactive.reactionActive,
+              )}
+            >
+              <Icon
+                name="thumb_up"
+                size="sm"
+                filled={isLiked}
+                className={actionLoading === "like" ? "animate-pulse" : ""}
+              />
+              <span className="min-w-[1ch] text-label-sm font-medium tabular-nums">
+                {formattedLikes}
+              </span>
+            </button>
+
+            <div
+              className="w-px self-center bg-outline-variant/30"
+              aria-hidden="true"
+              style={{ height: "1rem" }}
+            />
+
+            <button
+              type="button"
+              aria-label={t("reviewCard.dislike")}
+              aria-pressed={isDisliked}
+              disabled={actionLoading !== null}
+              onClick={() => void handleAction("unlike")}
+              className={cn(
+                "flex items-center px-3",
+                interactive.reactionIdle,
+                isDisliked && interactive.reactionActive,
+              )}
+            >
+              <Icon
+                name="thumb_down"
+                size="sm"
+                filled={isDisliked}
+                className={actionLoading === "unlike" ? "animate-pulse" : ""}
+              />
+            </button>
+          </div>
+        </CardFooter>
+      )}
+
+      <ReviewComments reviewId={reviewData.id} />
+    </Card>
   );
 }

@@ -1,8 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { App } from "@capacitor/app";
-import { Browser } from "@capacitor/browser";
-import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
 import { getSpotifyAuthUrl } from "@/api/auth";
 import { getApiErrorMessage } from "@/api/getApiErrorMessage";
@@ -38,20 +35,6 @@ export function ConnectSpotifyPage() {
   const ready = useScreenReady();
   const [error, setError] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
-  const [awaitingReturn, setAwaitingReturn] = useState(false);
-
-  useEffect(() => {
-    if (!Capacitor.isNativePlatform() || !awaitingReturn) return;
-
-    const listener = App.addListener("appStateChange", ({ isActive }) => {
-      if (!isActive) return;
-      void Browser.close();
-    });
-
-    return () => {
-      void listener.then((handle) => handle.remove());
-    };
-  }, [awaitingReturn]);
 
   const openSpotifyAuth = async () => {
     if (!token) return;
@@ -60,12 +43,7 @@ export function ConnectSpotifyPage() {
     try {
       const { url } = await getSpotifyAuthUrl(token);
       beginSpotifyLink();
-      setAwaitingReturn(true);
-      if (Capacitor.isNativePlatform()) {
-        await Browser.open({ url });
-      } else {
-        window.location.href = url;
-      }
+      window.location.href = url;
     } catch (err) {
       setError(getApiErrorMessage(err, t, "apiErrors.spotifyConnectionFailed"));
       setIsConnecting(false);
@@ -145,18 +123,6 @@ export function ConnectSpotifyPage() {
               {error && <p className="text-label-sm text-error">{error}</p>}
             </div>
 
-            {awaitingReturn && (
-              <Button
-                variant="secondary"
-                className="mt-md"
-                onClick={async () => {
-                  await markSpotifyConnected();
-                  navigate("/home", { replace: true });
-                }}
-              >
-                {t("connectSpotify.connected")}
-              </Button>
-            )}
           </section>
 
           <footer className="flex justify-center pt-lg">

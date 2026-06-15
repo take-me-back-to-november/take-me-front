@@ -263,6 +263,14 @@
     animation: slideUp var(--duration-slow) var(--ease-out) both;
   }
 
+  .animate-modal-backdrop {
+    animation: modalBackdropIn var(--duration-normal) var(--ease-out) both;
+  }
+
+  .animate-modal-card {
+    animation: modalCardIn var(--duration-slow) var(--ease-out) both;
+  }
+
   .scroll-snap-x {
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
@@ -302,7 +310,7 @@
   .fab-publish {
     position: fixed;
     right: var(--spacing-container-margin);
-    bottom: calc(72px + var(--spacing-md));
+    bottom: calc(72px + var(--spacing-md) + env(safe-area-inset-bottom, 0px));
     z-index: 40;
     display: flex;
     height: 3.5rem;
@@ -342,16 +350,19 @@
   }
 
   .fab-publish-icon {
-    display: flex;
-    height: 1.5rem;
-    width: 1.5rem;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     line-height: 0;
   }
 
+  .fab-publish-icon .material-symbols-outlined {
+    display: block;
+    line-height: 1;
+  }
+
   .fab-publish-icon--send .material-symbols-outlined {
-    transform: translate(-1px, 1px);
+    transform: translate(1px, -1px);
   }
 
   .now-playing-badge--active {
@@ -536,6 +547,28 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes modalBackdropIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(4px);
+  }
+}
+
+@keyframes modalCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
