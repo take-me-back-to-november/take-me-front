@@ -11,6 +11,8 @@ import { ReviewList } from "@/components/ReviewList";
 import { useAuth } from "@/context/AuthContext";
 import type { SongReview } from "@/types/api";
 
+const FEED_POLL_INTERVAL_MS = 5000;
+
 export function HomePage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -26,20 +28,43 @@ export function HomePage() {
       return;
     }
 
-    async function load() {
-      setLoadingReviews(true);
-      setError(null);
+    let cancelled = false;
+
+    async function loadFeed({ showLoading = false }: { showLoading?: boolean } = {}) {
+      if (showLoading) {
+        setLoadingReviews(true);
+        setError(null);
+      }
+
       try {
         const feed = await getReviews(token!, { orderBy: "-created_at" });
+        if (cancelled) return;
         setReviews(feed);
+        if (showLoading) {
+          setError(null);
+        }
       } catch (err) {
-        setError(getApiErrorMessage(err, t, "home.loadError"));
+        if (cancelled) return;
+        if (showLoading) {
+          setError(getApiErrorMessage(err, t, "home.loadError"));
+        }
       } finally {
-        setLoadingReviews(false);
+        if (!cancelled && showLoading) {
+          setLoadingReviews(false);
+        }
       }
     }
 
-    void load();
+    void loadFeed({ showLoading: true });
+
+    const intervalId = window.setInterval(() => {
+      void loadFeed();
+    }, FEED_POLL_INTERVAL_MS);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(intervalId);
+    };
   }, [token, t, feedTab]);
 
   const handleDeleteReview = async (reviewId: string) => {
