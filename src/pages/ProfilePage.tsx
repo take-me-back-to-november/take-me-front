@@ -12,7 +12,6 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { PageTransition } from "@/components/PageTransition";
 import { ReviewList } from "@/components/ReviewList";
 import { StatsRow } from "@/components/StatsRow";
-import { SpotifyIcon } from "@/components/SpotifyIcon";
 import { typography } from "@/lib/designSystem";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/cn";
@@ -113,24 +112,6 @@ export function ProfilePage() {
 
           <div className="flex w-full flex-col items-center gap-xs">
             <h1 className={typography.pageTitle}>{displayName}</h1>
-          </div>
-
-          <div className="mt-md flex w-full max-w-content-sm flex-col gap-xs">
-            <div className="flex min-h-12 items-center gap-sm rounded-full border border-outline-variant/30 bg-surface-container-high p-xs text-left">
-              <div className="flex min-w-0 items-center gap-sm">
-                <SpotifyIcon className="h-10 w-10 shrink-0" />
-                <div className="min-w-0">
-                  <div className="flex items-center gap-xs">
-                    <p className="text-label-md text-on-surface">Spotify</p>
-                    <span
-                      className="h-2.5 w-2.5 rounded-full bg-spotify"
-                      aria-label={t("profile.spotifyStatusConnected")}
-                      role="img"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
 
