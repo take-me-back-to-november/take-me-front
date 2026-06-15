@@ -2,7 +2,10 @@ import { apiRequest } from "./client";
 import type { RefreshTokenResponse, SpotifyAuthUrlResponse } from "@/types/api";
 
 export function getSpotifyLoginUrl() {
-  return apiRequest<SpotifyAuthUrlResponse>("/auth/login-url", {
+  const params = new URLSearchParams({
+    return_to: window.location.origin,
+  });
+  return apiRequest<SpotifyAuthUrlResponse>(`/auth/login-url?${params}`, {
     method: "GET",
   });
 }
