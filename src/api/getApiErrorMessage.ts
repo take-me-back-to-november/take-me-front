@@ -11,8 +11,6 @@ const ERROR_MAP: Record<string, string> = {
   "Failed to fetch Spotify songs": "apiErrors.spotifyFetchFailed",
   "Failed to fetch most listened songs": "apiErrors.spotifyFetchFailed",
   "Failed to get song from Spotify": "apiErrors.songNotFound",
-  "Invalid Google ID token": "apiErrors.invalidGoogleToken",
-  "Unable to start Spotify connection.": "apiErrors.spotifyConnectionFailed",
   "Failed to post review.": "apiErrors.reviewCreateFailed",
   "Search failed. Try again.": "apiErrors.spotifyFetchFailed",
   "Failed to load feed.": "apiErrors.spotifyFetchFailed",

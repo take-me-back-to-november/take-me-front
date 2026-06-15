@@ -8,14 +8,13 @@ import { FeedSwitcher, type FeedTab } from "@/components/FeedSwitcher";
 import { Icon } from "@/components/Icon";
 import { PageTransition } from "@/components/PageTransition";
 import { ReviewList } from "@/components/ReviewList";
-import { SpotifyConnectPrompt } from "@/components/SpotifyConnectPrompt";
 import { useAuth } from "@/context/AuthContext";
 import type { SongReview } from "@/types/api";
 
 export function HomePage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { token, user, spotifyConnected } = useAuth();
+  const { token, user } = useAuth();
   const [feedTab, setFeedTab] = useState<FeedTab>("general");
   const [reviews, setReviews] = useState<SongReview[]>([]);
   const [loadingReviews, setLoadingReviews] = useState(true);
@@ -23,12 +22,7 @@ export function HomePage() {
   const [deletingReviewId, setDeletingReviewId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!token || feedTab !== "general" || !spotifyConnected) {
-      if (!spotifyConnected) {
-        setReviews([]);
-        setLoadingReviews(false);
-        setError(null);
-      }
+    if (!token || feedTab !== "general") {
       return;
     }
 
@@ -46,7 +40,7 @@ export function HomePage() {
     }
 
     void load();
-  }, [token, t, feedTab, spotifyConnected]);
+  }, [token, t, feedTab]);
 
   const handleDeleteReview = async (reviewId: string) => {
     if (!token) return;
@@ -73,12 +67,6 @@ export function HomePage() {
             <FeedSwitcher value={feedTab} onChange={setFeedTab} />
           </div>
 
-          {!spotifyConnected && feedTab === "general" && (
-            <div className="mb-lg">
-              <SpotifyConnectPrompt variant="banner" />
-            </div>
-          )}
-
           {feedTab === "following" ? (
             <div className="mx-auto flex w-full max-w-content-md flex-col items-center rounded-xl border border-surface-container-high bg-surface-container-high/50 p-md">
               <img
@@ -93,7 +81,7 @@ export function HomePage() {
                 {t("home.followingComingSoonHint")}
               </p>
             </div>
-          ) : spotifyConnected ? (
+          ) : (
             <div className="flex flex-col">
               {loadingReviews ? (
                 <div className="rounded-xl border border-surface-container-high bg-surface-container-low p-md opacity-50">
@@ -138,7 +126,7 @@ export function HomePage() {
                 </div>
               )}
             </div>
-          ) : null}
+          )}
         </section>
       </main>
     </PageTransition>

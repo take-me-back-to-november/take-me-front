@@ -14,7 +14,6 @@ import { CharacterLimitIndicator } from "@/components/CharacterLimitIndicator";
 import { PageTransition } from "@/components/PageTransition";
 import { ReviewCard } from "@/components/ReviewCard";
 import { ReviewList } from "@/components/ReviewList";
-import { SpotifyConnectPrompt } from "@/components/SpotifyConnectPrompt";
 import { StarRating } from "@/components/StarRating";
 import { useAuth } from "@/context/AuthContext";
 import { addMyReviewId } from "@/lib/myReviews";
@@ -29,7 +28,7 @@ export function WriteReviewPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
-  const { token, user, spotifyConnected } = useAuth();
+  const { token, user } = useAuth();
   const song = (location.state as { song?: SpotifySong } | null)?.song;
 
   useEffect(() => {
@@ -197,9 +196,8 @@ export function WriteReviewPage() {
         </section>
 
         <section className="relative flex flex-col gap-xl px-container-margin">
-          {spotifyConnected ? (
-            hasExistingReview ? (
-              <>
+          {hasExistingReview ? (
+            <>
                 <p className="text-center text-body-md text-on-surface-variant">
                   {t("writeReview.alreadyReviewed")}
                 </p>
@@ -276,10 +274,7 @@ export function WriteReviewPage() {
 
                 {error && <p className="text-body-md text-error">{error}</p>}
               </>
-            )
-          ) : (
-            <SpotifyConnectPrompt variant="inline" />
-          )}
+            )}
         </section>
 
         <section className="mt-xl flex flex-col gap-md px-container-margin">
@@ -313,7 +308,7 @@ export function WriteReviewPage() {
         </section>
       </PageTransition>
 
-      {spotifyConnected && !hasExistingReview && (
+      {!hasExistingReview && (
         <button
           type="button"
           onClick={() => void handleSubmit()}

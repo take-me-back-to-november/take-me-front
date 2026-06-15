@@ -31,36 +31,12 @@
   "signIn": {
     "title": "Review the music that moves you.",
     "signingIn": "Signing in...",
-    "signInWithGoogle": "Sign in with Google",
-    "terms": "By signing in, you agree to our Terms and Privacy Policy.",
-    "envHint": "Set VITE_GOOGLE_CLIENT_ID in your .env file to enable Google Sign-In."
-  },
-  "connectSpotify": {
-    "title": "Connect your music.",
-    "subtitle": "Link Spotify to review songs. You can already browse the feed without connecting.",
-    "connect": "Connect Spotify",
-    "connecting": "Opening Spotify...",
-    "privacy": "Take Me will never modify your library or post without permission.",
-    "connected": "I've connected Spotify",
-    "notNow": "Explore the app"
-  },
-  "spotifyGate": {
-    "title": "Unlock Spotify",
-    "subtitle": "Connect your account to interact with the community.",
-    "profileHint": "Connect to review tracks from Spotify.",
-    "cta": "Connect Spotify",
-    "reviewLocked": "Connect Spotify to post your review.",
-    "benefits": {
-      "review": "Review songs from the Spotify catalog",
-      "suggestions": "See suggestions based on what you listen to most",
-      "nowPlaying": "See what you are playing right now"
-    }
+    "signInWithSpotify": "Continue with Spotify",
+    "terms": "By signing in, you agree to our Terms and Privacy Policy."
   },
   "spotifyCallback": {
-    "connecting": "Completing Spotify connection...",
-    "connected": "Spotify connected! Redirecting...",
-    "missingParams": "Invalid return link. Go back and try connecting again.",
-    "error": "Could not connect Spotify. Please try again."
+    "connecting": "Signing you in...",
+    "error": "Could not sign in with Spotify. Please try again."
   },
   "notFound": {
     "title": "Page not found",
@@ -75,7 +51,6 @@
   },
   "home": {
     "topTracks": "Your Top Tracks",
-    "connectSpotifyHint": "Connect Spotify to see your top tracks.",
     "recentReviews": "Recent Reviews",
     "feedGeneral": "General",
     "feedFollowing": "Following",
@@ -125,14 +100,7 @@
     "commentsError": "Failed to load comments."
   },
   "profile": {
-    "linkedToSpotify": "Spotify linked",
-    "spotifyLinkedHint": "Ready to review songs.",
     "spotifyStatusConnected": "Connected",
-    "spotifyStatusDisconnected": "Not connected",
-    "spotifySettings": "Configure Spotify",
-    "spotifySettingsTitle": "Configure Spotify",
-    "spotifySettingsDescription": "Choose whether to disconnect Spotify or switch to another account.",
-    "connectSpotify": "Connect Spotify",
     "language": "Language",
     "reviews": "Reviews",
     "averageRating": "Average",
@@ -144,23 +112,7 @@
     "nowPlayingError": "Could not load what you are listening to.",
     "myReviews": "My Reviews",
     "emptyReviews": "Your reviews will appear here.",
-    "writeReview": "Write a Review",
-    "switchSpotify": "Switch account",
-    "switchingSpotify": "Preparing switch...",
-    "switchSpotifyError": "Could not switch Spotify account.",
-    "unlinkSpotify": "Unlink Spotify",
-    "logoutSpotify": "Log out of Spotify",
-    "unlinkTitle": "Unlink Spotify?",
-    "unlinkDescription": "Without Spotify linked, some parts of Take Me stay locked.",
-    "unlinkLosses": {
-      "review": "Review songs from the Spotify catalog",
-      "nowPlaying": "See what is playing now on your profile"
-    },
-    "keepSpotify": "Keep Spotify linked",
-    "confirmUnlinkSpotify": "Unlink anyway",
-    "unlinkSuccess": "Spotify unlinked successfully.",
-    "unlinkError": "Could not unlink Spotify.",
-    "unlinking": "Unlinking..."
+    "writeReview": "Write a Review"
   },
   "reviewCard": {
     "albumCover": "Album cover",
@@ -213,8 +165,6 @@
     "spotifyNotConfigured": "Spotify credentials are not configured",
     "spotifyNoRefreshToken": "Spotify is not connected",
     "spotifyFetchFailed": "Failed to fetch Spotify data",
-    "spotifyConnectionFailed": "Unable to start Spotify connection",
-    "invalidGoogleToken": "Invalid Google ID token",
     "signInFailed": "Unable to sign in. Please try again.",
     "reviewCreateFailed": "Failed to create review",
     "songNotFound": "Failed to get song from Spotify",

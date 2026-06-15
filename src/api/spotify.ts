@@ -32,10 +32,3 @@ export function getCurrentlyPlayingSong(token: string) {
     { token },
   );
 }
-
-export function removeSpotifyLink(token: string) {
-  return apiRequest<void>("/spotify/me", {
-    method: "DELETE",
-    token,
-  });
-}

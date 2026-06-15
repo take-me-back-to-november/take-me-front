@@ -9,7 +9,7 @@ import { useAuth } from "@/context/AuthContext";
 export function SplashPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { token, spotifyConnected, isLoading } = useAuth();
+  const { token, isLoading } = useAuth();
   const [visible, setVisible] = useState({ logo: false, tagline: false, loader: false });
 
   useEffect(() => {
@@ -27,15 +27,13 @@ export function SplashPage() {
     const timer = setTimeout(() => {
       if (!token) {
         navigate("/sign-in", { replace: true });
-      } else if (!spotifyConnected) {
-        navigate("/connect-spotify", { replace: true });
       } else {
         navigate("/home", { replace: true });
       }
     }, token ? 0 : 2200);
 
     return () => clearTimeout(timer);
-  }, [isLoading, token, spotifyConnected, navigate]);
+  }, [isLoading, token, navigate]);
 
   return (
     <div className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden bg-background">

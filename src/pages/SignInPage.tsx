@@ -1,31 +1,23 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { type CredentialResponse } from "@react-oauth/google";
 import { useTranslation } from "react-i18next";
-import { GoogleSignInButton } from "@/components/GoogleSignInButton";
+import { Button } from "@/components/Button";
 import { Logo } from "@/components/Logo";
+import { SpotifyIcon } from "@/components/SpotifyIcon";
 import { useAuth } from "@/context/AuthContext";
 
 export function SignInPage() {
-  const navigate = useNavigate();
   const { t } = useTranslation();
   const { signIn, authError } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleCredential = async (response: CredentialResponse) => {
-    if (!response.credential) return;
+  const handleSignIn = async () => {
     setIsSubmitting(true);
     try {
-      await signIn(response.credential);
-      navigate("/connect-spotify", { replace: true });
+      await signIn();
     } catch {
-      // error handled in context
-    } finally {
       setIsSubmitting(false);
     }
   };
-
-  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
   return (
     <div className="relative min-h-dvh bg-background">
@@ -40,16 +32,17 @@ export function SignInPage() {
           </h1>
 
           <div className="mt-xl flex w-full max-w-[320px] flex-col gap-md">
-            {googleClientId ? (
-              <GoogleSignInButton
-                onSuccess={handleCredential}
-                isSubmitting={isSubmitting}
-              />
-            ) : (
-              <p className="flex min-h-11 items-center justify-center text-center text-label-sm text-on-surface-variant">
-                {t("signIn.envHint")}
-              </p>
-            )}
+            <Button
+              onClick={() => void handleSignIn()}
+              disabled={isSubmitting}
+              fullWidth
+              className="h-11 bg-spotify text-black hover:bg-spotify/90"
+              icon={<SpotifyIcon className="h-5 w-5" />}
+            >
+              {isSubmitting
+                ? t("signIn.signingIn")
+                : t("signIn.signInWithSpotify")}
+            </Button>
 
             <div
               className="flex min-h-[1.125rem] items-center justify-center"

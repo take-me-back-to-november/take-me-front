@@ -1,19 +1,9 @@
 export interface User {
   id: string;
-  google_id: string;
-  google_email: string | null;
-  email_verified: boolean | null;
+  spotify_id: string;
+  email: string | null;
   name: string | null;
-  first_name: string | null;
-  last_name: string | null;
   picture_url: string | null;
-  hosted_domain: string | null;
-}
-
-export interface AuthResponse {
-  user: User;
-  access_token: string;
-  refresh_token: string;
 }
 
 export interface RefreshTokenResponse {

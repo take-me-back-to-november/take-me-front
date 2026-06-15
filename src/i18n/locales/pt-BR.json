@@ -31,36 +31,12 @@
   "signIn": {
     "title": "Avalie a música que te move.",
     "signingIn": "Entrando...",
-    "signInWithGoogle": "Entrar com Google",
-    "terms": "Ao entrar, você concorda com nossos Termos e Política de Privacidade.",
-    "envHint": "Defina VITE_GOOGLE_CLIENT_ID no seu arquivo .env para habilitar o login com Google."
-  },
-  "connectSpotify": {
-    "title": "Conecte sua música.",
-    "subtitle": "Vincule o Spotify para avaliar músicas. Você já pode explorar o feed sem conectar.",
-    "connect": "Conectar Spotify",
-    "connecting": "Abrindo Spotify...",
-    "privacy": "O Take Me nunca modificará sua biblioteca ou publicará sem permissão.",
-    "connected": "Conectei o Spotify",
-    "notNow": "Explorar o app"
-  },
-  "spotifyGate": {
-    "title": "Desbloqueie o Spotify",
-    "subtitle": "Conecte sua conta para interagir com a comunidade.",
-    "profileHint": "Conecte para avaliar músicas do Spotify.",
-    "cta": "Conectar Spotify",
-    "reviewLocked": "Conecte o Spotify para publicar sua avaliação.",
-    "benefits": {
-      "review": "Avaliar músicas do catálogo do Spotify",
-      "suggestions": "Ver sugestões baseadas no que você mais escuta",
-      "nowPlaying": "Acompanhar o que está tocando agora"
-    }
+    "signInWithSpotify": "Continuar com Spotify",
+    "terms": "Ao entrar, você concorda com nossos Termos e Política de Privacidade."
   },
   "spotifyCallback": {
-    "connecting": "Concluindo conexão com Spotify...",
-    "connected": "Spotify conectado! Redirecionando...",
-    "missingParams": "Link de retorno inválido. Volte e tente conectar novamente.",
-    "error": "Não foi possível conectar o Spotify. Tente novamente."
+    "connecting": "Entrando...",
+    "error": "Não foi possível entrar com o Spotify. Tente novamente."
   },
   "notFound": {
     "title": "Página não encontrada",
@@ -75,7 +51,6 @@
   },
   "home": {
     "topTracks": "Suas faixas favoritas",
-    "connectSpotifyHint": "Conecte o Spotify para ver suas faixas favoritas.",
     "recentReviews": "Avaliações recentes",
     "feedGeneral": "Geral",
     "feedFollowing": "Seguindo",
@@ -125,14 +100,7 @@
     "commentsError": "Falha ao carregar comentários."
   },
   "profile": {
-    "linkedToSpotify": "Spotify vinculado",
-    "spotifyLinkedHint": "Pronto para avaliar músicas.",
     "spotifyStatusConnected": "Conectado",
-    "spotifyStatusDisconnected": "Não conectado",
-    "spotifySettings": "Configurar Spotify",
-    "spotifySettingsTitle": "Configurar Spotify",
-    "spotifySettingsDescription": "Escolha se quer desconectar o Spotify ou trocar para outra conta.",
-    "connectSpotify": "Conectar Spotify",
     "language": "Idioma",
     "reviews": "Avaliações",
     "averageRating": "Média",
@@ -144,23 +112,7 @@
     "nowPlayingError": "Não foi possível carregar o que você está ouvindo.",
     "myReviews": "Minhas avaliações",
     "emptyReviews": "Suas avaliações aparecerão aqui.",
-    "writeReview": "Escrever avaliação",
-    "switchSpotify": "Trocar conta",
-    "switchingSpotify": "Preparando troca...",
-    "switchSpotifyError": "Não foi possível trocar a conta do Spotify.",
-    "unlinkSpotify": "Desvincular Spotify",
-    "logoutSpotify": "Sair do Spotify",
-    "unlinkTitle": "Desvincular Spotify?",
-    "unlinkDescription": "Sem o Spotify vinculado, algumas partes do Take Me ficam bloqueadas.",
-    "unlinkLosses": {
-      "review": "Avaliar músicas do catálogo do Spotify",
-      "nowPlaying": "Ver o que está tocando agora no seu perfil"
-    },
-    "keepSpotify": "Manter Spotify vinculado",
-    "confirmUnlinkSpotify": "Desvincular mesmo assim",
-    "unlinkSuccess": "Spotify desvinculado com sucesso.",
-    "unlinkError": "Não foi possível desvincular o Spotify.",
-    "unlinking": "Desvinculando..."
+    "writeReview": "Escrever avaliação"
   },
   "reviewCard": {
     "albumCover": "Capa do álbum",
@@ -213,8 +165,6 @@
     "spotifyNotConfigured": "Credenciais do Spotify não configuradas",
     "spotifyNoRefreshToken": "Spotify não conectado",
     "spotifyFetchFailed": "Falha ao buscar dados do Spotify",
-    "spotifyConnectionFailed": "Não foi possível iniciar a conexão com o Spotify",
-    "invalidGoogleToken": "Token do Google inválido",
     "signInFailed": "Não foi possível entrar. Tente novamente.",
     "reviewCreateFailed": "Falha ao criar avaliação",
     "songNotFound": "Música não encontrada no Spotify",

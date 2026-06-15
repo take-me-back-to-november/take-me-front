@@ -21,18 +21,14 @@ import type { UserResume } from "@/types/api";
 export function ProfilePage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { user, spotifyConnected, token, unlinkSpotify } = useAuth();
+  const { user, token } = useAuth();
   const [resume, setResume] = useState<UserResume | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [unlinkError, setUnlinkError] = useState<string | null>(null);
-  const [isUnlinking, setIsUnlinking] = useState(false);
-  const [showSpotifySettings, setShowSpotifySettings] = useState(false);
   const [deletingReviewId, setDeletingReviewId] = useState<string | null>(null);
 
   const displayName = resume?.name || user?.name || t("common.defaultUser");
   const pictureUrl = resume?.picture_url ?? user?.picture_url ?? null;
-  const isSpotifyConnected = resume?.spotify_connected ?? spotifyConnected;
 
   useEffect(() => {
     if (!token) return;
@@ -54,17 +50,6 @@ export function ProfilePage() {
     void loadResume();
   }, [token, t]);
 
-  useEffect(() => {
-    if (!showSpotifySettings) return;
-
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = originalOverflow;
-    };
-  }, [showSpotifySettings]);
-
   const averageStars =
     resume && resume.reviews_count > 0
       ? resume.reviews_average_stars.toFixed(1)
@@ -83,39 +68,6 @@ export function ProfilePage() {
       accent: true,
     },
   ];
-
-  const handleSwitchSpotifyAccount = async () => {
-    setUnlinkError(null);
-    setShowSpotifySettings(false);
-    setIsUnlinking(true);
-    try {
-      await unlinkSpotify();
-      setResume((current) =>
-        current ? { ...current, spotify_connected: false } : current,
-      );
-      navigate("/connect-spotify");
-    } catch (err) {
-      setUnlinkError(getApiErrorMessage(err, t, "profile.switchSpotifyError"));
-    } finally {
-      setIsUnlinking(false);
-    }
-  };
-
-  const handleLogoutSpotify = async () => {
-    setUnlinkError(null);
-    setIsUnlinking(true);
-    try {
-      await unlinkSpotify();
-      setResume((current) =>
-        current ? { ...current, spotify_connected: false } : current,
-      );
-      setShowSpotifySettings(false);
-    } catch (err) {
-      setUnlinkError(getApiErrorMessage(err, t, "profile.unlinkError"));
-    } finally {
-      setIsUnlinking(false);
-    }
-  };
 
   const handleDeleteReview = async (reviewId: string) => {
     if (!token) return;
@@ -164,52 +116,25 @@ export function ProfilePage() {
           </div>
 
           <div className="mt-md flex w-full max-w-content-sm flex-col gap-xs">
-            <div className="flex min-h-12 items-center justify-between gap-sm rounded-full border border-outline-variant/30 bg-surface-container-high p-xs text-left">
+            <div className="flex min-h-12 items-center gap-sm rounded-full border border-outline-variant/30 bg-surface-container-high p-xs text-left">
               <div className="flex min-w-0 items-center gap-sm">
                 <SpotifyIcon className="h-10 w-10 shrink-0" />
                 <div className="min-w-0">
                   <div className="flex items-center gap-xs">
                     <p className="text-label-md text-on-surface">Spotify</p>
                     <span
-                      className={`h-2.5 w-2.5 rounded-full ${isSpotifyConnected ? "bg-spotify" : "bg-error"}`}
-                      aria-label={
-                        isSpotifyConnected
-                          ? t("profile.spotifyStatusConnected")
-                          : t("profile.spotifyStatusDisconnected")
-                      }
+                      className="h-2.5 w-2.5 rounded-full bg-spotify"
+                      aria-label={t("profile.spotifyStatusConnected")}
                       role="img"
                     />
                   </div>
                 </div>
               </div>
-              <button
-                type="button"
-                aria-label={t("profile.spotifySettings")}
-                onClick={() => {
-                  if (isSpotifyConnected) {
-                    setShowSpotifySettings(true);
-                    return;
-                  }
-                  navigate("/connect-spotify");
-                }}
-                disabled={isUnlinking}
-                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-default active:scale-95 disabled:opacity-50 ${
-                  isSpotifyConnected
-                    ? "border-outline text-on-surface hover:bg-surface-container-highest"
-                    : "border-spotify/30 bg-spotify/10 text-spotify hover:bg-spotify/15"
-                }`}
-              >
-                <Icon name={isSpotifyConnected ? "settings" : "arrow_forward"} size="md" />
-              </button>
             </div>
-
-            {unlinkError && (
-              <p className="text-body-md text-error">{unlinkError}</p>
-            )}
           </div>
         </section>
 
-        {isSpotifyConnected && token && (
+        {token && (
           <section>
             <CurrentlyPlayingCard token={token} />
           </section>
@@ -250,7 +175,7 @@ export function ProfilePage() {
                 {t("profile.emptyReviews")}
               </p>
               <Button
-                onClick={() => navigate(isSpotifyConnected ? "/review" : "/connect-spotify")}
+                onClick={() => navigate("/review")}
                 className="mt-md"
                 icon={<Icon name="add" size="md" />}
               >
@@ -261,62 +186,6 @@ export function ProfilePage() {
         </section>
       </main>
       </PageTransition>
-
-      {showSpotifySettings && (
-        <div
-          className="animate-modal-backdrop fixed inset-0 z-[80] flex items-center justify-center bg-black/55 px-md backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="spotify-settings-title"
-        >
-          <button
-            type="button"
-            className="absolute inset-0 cursor-default"
-            aria-label={t("common.close")}
-            onClick={() => setShowSpotifySettings(false)}
-          />
-
-          <section className="animate-modal-card relative z-10 w-full max-w-content-sm rounded-[28px] border border-outline-variant/40 bg-surface-container px-lg py-lg text-center shadow-[0_18px_60px_rgba(0,0,0,0.45)]">
-            <div className="mx-auto mb-md flex h-12 w-12 items-center justify-center rounded-full bg-spotify/10">
-              <SpotifyIcon className="h-7 w-7" />
-            </div>
-            <h2 id="spotify-settings-title" className="text-headline-md text-on-surface">
-              {t("profile.spotifySettingsTitle")}
-            </h2>
-            <p className="mt-xs text-body-md text-on-surface-variant">
-              {t("profile.spotifySettingsDescription")}
-            </p>
-
-            <div className="mt-lg flex flex-col gap-sm">
-              <Button
-                onClick={() => void handleSwitchSpotifyAccount()}
-                disabled={isUnlinking}
-                fullWidth
-                icon={<Icon name="sync_alt" size="sm" />}
-              >
-                {isUnlinking ? t("profile.switchingSpotify") : t("profile.switchSpotify")}
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => void handleLogoutSpotify()}
-                disabled={isUnlinking}
-                fullWidth
-              >
-                {isUnlinking ? t("profile.unlinking") : t("profile.logoutSpotify")}
-              </Button>
-              <Button
-                variant="ghost"
-                onClick={() => setShowSpotifySettings(false)}
-                disabled={isUnlinking}
-                fullWidth
-              >
-                {t("common.close")}
-              </Button>
-            </div>
-          </section>
-        </div>
-      )}
-
     </>
   );
 }
