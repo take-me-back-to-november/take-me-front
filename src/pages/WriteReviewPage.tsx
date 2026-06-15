@@ -14,6 +14,7 @@ import { CharacterLimitIndicator } from "@/components/CharacterLimitIndicator";
 import { PageTransition } from "@/components/PageTransition";
 import { ReviewCard } from "@/components/ReviewCard";
 import { ReviewList } from "@/components/ReviewList";
+import { SongPreviewPlayButton } from "@/components/SongPreviewPlayButton";
 import { StarRating } from "@/components/StarRating";
 import { useAuth } from "@/context/AuthContext";
 import { addMyReviewId } from "@/lib/myReviews";
@@ -174,12 +175,13 @@ export function WriteReviewPage() {
           </div>
 
           <div className="relative z-20 flex w-full flex-col items-center gap-lg px-container-margin pb-lg pt-8">
-            <div className="relative h-44 w-44 flex-shrink-0 overflow-hidden rounded-lg shadow-2xl md:h-52 md:w-52">
+            <div className="group relative h-44 w-44 flex-shrink-0 overflow-hidden rounded-lg shadow-2xl md:h-52 md:w-52">
               <img
                 src={song.cover_url}
                 alt={song.title}
                 className="h-full w-full object-cover"
               />
+              <SongPreviewPlayButton songId={song.id} size="lg" />
             </div>
             <div className="flex flex-col text-center">
               <h1 className="mb-xs text-headline-lg-mobile tracking-tight text-on-surface md:text-headline-lg">

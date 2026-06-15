@@ -1,6 +1,7 @@
 import { apiRequest } from "./client";
 import type {
   CurrentlyPlayingSong,
+  SongPreview,
   SpotifyAlbum,
   SpotifySong,
 } from "@/types/api";
@@ -31,4 +32,10 @@ export function getCurrentlyPlayingSong(token: string) {
     "/spotify/songs/currently-playing",
     { token },
   );
+}
+
+export function getSongPreview(token: string, spotifySongId: string) {
+  return apiRequest<SongPreview>(`/spotify/songs/${spotifySongId}/preview`, {
+    token,
+  });
 }

@@ -81,6 +81,10 @@
     "trackCount": "{{count}} tracks",
     "searchError": "Search failed."
   },
+  "songPreview": {
+    "play": "Play preview",
+    "pause": "Pause preview"
+  },
   "writeReview": {
     "pickTrackFirst": "Pick a track first",
     "pickTrackHint": "Search for a song or choose one from your top tracks to write a review.",

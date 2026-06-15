@@ -81,6 +81,10 @@
     "trackCount": "{{count}} faixas",
     "searchError": "Falha na busca."
   },
+  "songPreview": {
+    "play": "Ouvir prévia",
+    "pause": "Pausar prévia"
+  },
   "writeReview": {
     "pickTrackFirst": "Escolha uma faixa primeiro",
     "pickTrackHint": "Busque uma música ou escolha uma das suas faixas favoritas para escrever uma avaliação.",

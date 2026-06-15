@@ -40,6 +40,10 @@ export interface SpotifyAlbum {
 
 export type SpotifySong = SpotifyTrack;
 
+export interface SongPreview {
+  preview_url: string;
+}
+
 export interface SongReviewUser {
   id: string;
   name: string | null;
