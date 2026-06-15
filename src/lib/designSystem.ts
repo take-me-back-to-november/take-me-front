@@ -52,7 +52,7 @@ export const layout = {
   cardHeader: "mb-sm flex items-center justify-between gap-sm",
   cardAuthorRow: "flex min-w-0 flex-1 items-center gap-[10px]",
   cardAuthorMeta: "flex min-w-0 flex-col justify-center",
-  cardActions: "mt-[12px] border-t border-white/10 pt-[12px]",
+  cardActions: "mt-md border-t border-white/10 pt-md pb-md",
   commentSection: "border-t border-white/10 pt-md",
   commentPanel:
     "mt-sm rounded-lg border border-white/5 bg-surface-container-high/80 p-md",

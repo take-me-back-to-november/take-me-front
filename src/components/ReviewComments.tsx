@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import {
   createReviewNestedReply,
   createReviewRootReply,
-  getReviewMessages,
 } from "@/api/reviewMessages";
 import { getApiErrorMessage } from "@/api/getApiErrorMessage";
 import { CardAuthorHeader } from "@/components/CardAuthorHeader";
@@ -12,6 +11,11 @@ import { ReviewCommentForm } from "@/components/ReviewCommentForm";
 import { useAuth } from "@/context/AuthContext";
 import { useRelativeTime } from "@/hooks/useRelativeTime";
 import { buildMessageTree } from "@/lib/buildMessageTree";
+import {
+  appendCachedReviewMessage,
+  getCachedReviewMessages,
+  prefetchReviewMessages,
+} from "@/lib/reviewMessagesCache";
 import { interactive, layout, typography } from "@/lib/designSystem";
 import { cn } from "@/lib/cn";
 import type { MessageTreeNode, SongReviewMessage } from "@/types/api";
@@ -150,9 +154,11 @@ export function ReviewComments({ reviewId }: ReviewCommentsProps) {
   const { t } = useTranslation();
   const { token } = useAuth();
   const [expanded, setExpanded] = useState(false);
-  const [messages, setMessages] = useState<SongReviewMessage[]>([]);
+  const [messages, setMessages] = useState<SongReviewMessage[]>(
+    () => getCachedReviewMessages(reviewId) ?? [],
+  );
   const [loading, setLoading] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(() => getCachedReviewMessages(reviewId) !== undefined);
   const [error, setError] = useState<string | null>(null);
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
 
@@ -163,7 +169,7 @@ export function ReviewComments({ reviewId }: ReviewCommentsProps) {
     setError(null);
 
     try {
-      const fetched = await getReviewMessages(token, reviewId);
+      const fetched = await prefetchReviewMessages(token, reviewId);
       setMessages(fetched);
       setLoaded(true);
     } catch (err) {
@@ -174,11 +180,48 @@ export function ReviewComments({ reviewId }: ReviewCommentsProps) {
   }, [reviewId, t, token]);
 
   useEffect(() => {
-    if (!expanded || loaded || !token) return;
-    void loadMessages();
-  }, [expanded, loaded, loadMessages, token]);
+    setExpanded(false);
+    setReplyingTo(null);
+
+    if (!token) return;
+
+    const cached = getCachedReviewMessages(reviewId);
+    if (cached) {
+      setMessages(cached);
+      setLoaded(true);
+      setError(null);
+      return;
+    }
+
+    setMessages([]);
+    setLoaded(false);
+    setError(null);
+    setLoading(true);
+
+    let cancelled = false;
+
+    void prefetchReviewMessages(token, reviewId)
+      .then((fetched) => {
+        if (cancelled) return;
+        setMessages(fetched);
+        setLoaded(true);
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        setError(getApiErrorMessage(err, t, "reviewComments.loadError"));
+      })
+      .finally(() => {
+        if (cancelled) return;
+        setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [reviewId, token, t]);
 
   const handleReplyPosted = (message: SongReviewMessage) => {
+    appendCachedReviewMessage(reviewId, message);
     setMessages((current) => [...current, message]);
     setReplyingTo(null);
   };

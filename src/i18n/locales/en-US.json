@@ -22,6 +22,12 @@
   "splash": {
     "tagline": "Where songs get taken seriously."
   },
+  "mobileOnly": {
+    "title": "Mobile only, by Gabriel's decree",
+    "description": "Gabriel achieved a historic feat that prevents Take Me from being used on desktop. Open it on your phone if you actually want to review music.",
+    "hint": "Mobile only. No exceptions. Not even for your widescreen monitor.",
+    "gabrielAlt": "Tribute to Gabriel — Discovering Brazil"
+  },
   "signIn": {
     "title": "Review the music that moves you.",
     "signingIn": "Signing in...",

@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AppShell } from "@/components/AppShell";
+import { MobileOnlyGate } from "@/components/MobileOnlyGate";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AuthProvider } from "@/context/AuthContext";
 import { useDocumentLang } from "@/hooks/useDocumentLang";
@@ -47,11 +48,13 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      {googleClientId ? (
-        <GoogleOAuthProvider clientId={googleClientId}>{content}</GoogleOAuthProvider>
-      ) : (
-        content
-      )}
+      <MobileOnlyGate>
+        {googleClientId ? (
+          <GoogleOAuthProvider clientId={googleClientId}>{content}</GoogleOAuthProvider>
+        ) : (
+          content
+        )}
+      </MobileOnlyGate>
     </BrowserRouter>
   );
 }

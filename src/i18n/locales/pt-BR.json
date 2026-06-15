@@ -22,6 +22,12 @@
   "splash": {
     "tagline": "Onde as músicas são levadas a sério."
   },
+  "mobileOnly": {
+    "title": "Só no celular, por ordem do Gabriel",
+    "description": "Gabriel fez um feito histórico que impediu o Take Me de ser usado no desktop. Abra no celular se quiser avaliar música de verdade.",
+    "hint": "Mobile only. Sem exceções. Nem pro seu monitor widescreen.",
+    "gabrielAlt": "Homenagem a Gabriel — Descobrindo o Brasil"
+  },
   "signIn": {
     "title": "Avalie a música que te move.",
     "signingIn": "Entrando...",
