@@ -1,5 +1,5 @@
 import { apiRequest } from "./client";
-import type { CreateReviewPayload, SongReview } from "@/types/api";
+import type { CreateReviewPayload, PaginatedSongReviews, SongReview } from "@/types/api";
 
 type GetReviewsParams = {
   offset?: number;
@@ -10,10 +10,12 @@ type GetReviewsParams = {
   userId?: string;
 };
 
+export const REVIEWS_PAGE_SIZE = 10;
+
 export function getReviews(token: string, params: GetReviewsParams = {}) {
   const {
     offset = 0,
-    limit = 10,
+    limit = REVIEWS_PAGE_SIZE,
     orderBy = "created_at",
     spotifySongId,
     spotifyAlbumId,
@@ -36,7 +38,7 @@ export function getReviews(token: string, params: GetReviewsParams = {}) {
     searchParams.set("user_id", userId);
   }
 
-  return apiRequest<SongReview[]>(`/reviews?${searchParams}`, { token });
+  return apiRequest<PaginatedSongReviews>(`/reviews?${searchParams}`, { token });
 }
 
 export async function getAllReviewsForSong(token: string, spotifySongId: string) {
@@ -52,9 +54,9 @@ export async function getAllReviewsForSong(token: string, spotifySongId: string)
       spotifySongId,
     });
 
-    reviews.push(...page);
+    reviews.push(...page.items);
 
-    if (page.length < pageSize) {
+    if (!page.has_next_page) {
       break;
     }
 
@@ -69,7 +71,7 @@ export async function getMyReviewForSong(
   spotifySongId: string,
   userId: string,
 ) {
-  const reviews = await getReviews(token, {
+  const page = await getReviews(token, {
     offset: 0,
     limit: 1,
     orderBy: "-created_at",
@@ -77,7 +79,7 @@ export async function getMyReviewForSong(
     userId,
   });
 
-  return reviews[0] ?? null;
+  return page.items[0] ?? null;
 }
 
 export function createReview(token: string, payload: CreateReviewPayload) {

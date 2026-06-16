@@ -76,6 +76,11 @@ export interface SongReview {
   updated_at: string;
 }
 
+export interface PaginatedSongReviews {
+  items: SongReview[];
+  has_next_page: boolean;
+}
+
 export interface UserResume {
   id: string;
   name: string;

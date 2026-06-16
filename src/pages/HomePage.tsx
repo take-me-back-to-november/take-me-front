@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { getApiErrorMessage } from "@/api/getApiErrorMessage";
-import { getReviews, deleteReview } from "@/api/reviews";
+import { deleteReview, getReviews, REVIEWS_PAGE_SIZE } from "@/api/reviews";
 import { Button } from "@/components/Button";
 import { FeedSwitcher, type FeedTab } from "@/components/FeedSwitcher";
 import { Icon } from "@/components/Icon";
@@ -19,53 +19,100 @@ export function HomePage() {
   const { token, user } = useAuth();
   const [feedTab, setFeedTab] = useState<FeedTab>("general");
   const [reviews, setReviews] = useState<SongReview[]>([]);
+  const [hasNextPage, setHasNextPage] = useState(false);
   const [loadingReviews, setLoadingReviews] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [deletingReviewId, setDeletingReviewId] = useState<string | null>(null);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const hasLoadedBeyondFirstPage = useRef(false);
 
-  useEffect(() => {
-    if (!token || feedTab !== "general") {
-      return;
-    }
+  const loadFeed = useCallback(
+    async ({ showLoading = false }: { showLoading?: boolean } = {}) => {
+      if (!token) return;
 
-    let cancelled = false;
-
-    async function loadFeed({ showLoading = false }: { showLoading?: boolean } = {}) {
       if (showLoading) {
         setLoadingReviews(true);
         setError(null);
       }
 
       try {
-        const feed = await getReviews(token!, { orderBy: "-created_at" });
-        if (cancelled) return;
-        setReviews(feed);
+        const page = await getReviews(token, { orderBy: "-created_at" });
+        setReviews(page.items);
+        setHasNextPage(page.has_next_page);
+        hasLoadedBeyondFirstPage.current = false;
         if (showLoading) {
           setError(null);
         }
       } catch (err) {
-        if (cancelled) return;
         if (showLoading) {
           setError(getApiErrorMessage(err, t, "home.loadError"));
         }
       } finally {
-        if (!cancelled && showLoading) {
+        if (showLoading) {
           setLoadingReviews(false);
         }
       }
+    },
+    [token, t],
+  );
+
+  const loadMore = useCallback(async () => {
+    if (!token || loadingMore || !hasNextPage) return;
+
+    setLoadingMore(true);
+    try {
+      const page = await getReviews(token, {
+        offset: reviews.length,
+        limit: REVIEWS_PAGE_SIZE,
+        orderBy: "-created_at",
+      });
+      setReviews((current) => [...current, ...page.items]);
+      setHasNextPage(page.has_next_page);
+      hasLoadedBeyondFirstPage.current = true;
+    } catch (err) {
+      setError(getApiErrorMessage(err, t, "home.loadError"));
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [token, loadingMore, hasNextPage, reviews.length, t]);
+
+  useEffect(() => {
+    if (!token || feedTab !== "general") {
+      return;
     }
 
     void loadFeed({ showLoading: true });
 
     const intervalId = window.setInterval(() => {
-      void loadFeed();
+      if (!hasLoadedBeyondFirstPage.current) {
+        void loadFeed();
+      }
     }, FEED_POLL_INTERVAL_MS);
 
     return () => {
-      cancelled = true;
       window.clearInterval(intervalId);
     };
-  }, [token, t, feedTab]);
+  }, [token, feedTab, loadFeed]);
+
+  useEffect(() => {
+    const sentinel = loadMoreRef.current;
+    if (!sentinel || feedTab !== "general" || loadingReviews) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          void loadMore();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [feedTab, loadingReviews, loadMore, hasNextPage]);
 
   const handleDeleteReview = async (reviewId: string) => {
     if (!token) return;
@@ -120,16 +167,25 @@ export function HomePage() {
                   <div className="h-20 rounded shimmer" />
                 </div>
               ) : reviews.length > 0 ? (
-                <ReviewList
-                  reviews={reviews}
-                  getAuthorName={(review) => review.user?.name ?? t("common.reviewer")}
-                  getAuthorAvatar={(review) => review.user?.picture_url ?? undefined}
-                  getOnDelete={(review) =>
-                    review.user?.id === user?.id && deletingReviewId !== review.id
-                      ? () => void handleDeleteReview(review.id)
-                      : undefined
-                  }
-                />
+                <>
+                  <ReviewList
+                    reviews={reviews}
+                    getAuthorName={(review) => review.user?.name ?? t("common.reviewer")}
+                    getAuthorAvatar={(review) => review.user?.picture_url ?? undefined}
+                    getOnDelete={(review) =>
+                      review.user?.id === user?.id && deletingReviewId !== review.id
+                        ? () => void handleDeleteReview(review.id)
+                        : undefined
+                    }
+                  />
+                  <div ref={loadMoreRef} className="flex justify-center py-md">
+                    {loadingMore && (
+                      <p className="text-body-md text-on-surface-variant">
+                        {t("common.loading")}
+                      </p>
+                    )}
+                  </div>
+                </>
               ) : (
                 <div className="animate-fade-in flex flex-col items-center justify-center rounded-xl border border-dashed border-surface-container-high bg-surface-container-high/50 py-xl">
                   <div className="pulse-loader mb-md flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
